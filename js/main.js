@@ -205,8 +205,8 @@
     const border = BORDERS[data.color] || 'border-neon-cyan/40';
     const ring = RINGS[data.color] || 'bg-neon-cyan/15';
 
+    // Encabezado: año + semestre correspondiente
     let html = `
-      <!-- Encabezado del año -->
       <div class="relative flex flex-wrap items-center gap-4 mb-6">
         <div class="timeline-node ${ring} ${border}">
           <i data-lucide="flag" class="w-4 h-4 ${acc}"></i>
@@ -214,57 +214,28 @@
         <div class="flex-1 min-w-[200px] rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-5 backdrop-blur-xl">
           <div class="flex items-center gap-3 flex-wrap">
             <span class="font-display text-2xl sm:text-3xl font-black text-white">${year}.º AÑO</span>
-            <span class="rounded-full border ${border} ${ring} px-3 py-1 font-mono text-[10px] tracking-widest ${acc} uppercase">${data.title}</span>
+            <span class="rounded-full border ${border} ${ring} px-3 py-1 font-mono text-[10px] tracking-widest ${acc} uppercase">${data.sem}</span>
           </div>
-          <p class="mt-2 text-sm text-slate-400">${data.summary}</p>
           <div class="mt-3 flex flex-wrap gap-2 font-mono text-[10px] text-slate-500">
-            <span class="chip">${data.subjects.length} asignaturas</span>
-            <span class="chip">2 semestres</span>
-            <span class="chip">Proyectos prácticos</span>
+            <span class="chip">${data.subjects.length} ${data.subjects.length === 1 ? 'asignatura' : 'asignaturas'}</span>
+            <span class="chip">${data.sem}</span>
           </div>
         </div>
       </div>`;
 
-    html += '<div class="space-y-3">';
+    // Lista de asignaturas (solo nombres)
+    html += '<div class="grid sm:grid-cols-2 gap-3">';
 
-    data.subjects.forEach((s, i) => {
-      const tech = (s.tech || []).map(t => `<span class="badge">${t}</span>`).join('');
-      const topics = (s.topics || []).map(t =>
-        `<li class="flex gap-2 text-slate-400"><i data-lucide="dot" class="w-4 h-4 shrink-0 ${acc}"></i>${t}</li>`).join('');
-
+    data.subjects.forEach((name, i) => {
       html += `
-        <div class="subject-card" data-subject>
-          <div class="relative">
-            <div class="timeline-node ${ring} ${border}">
-              <i data-lucide="${s.icon}" class="w-4 h-4 ${acc}"></i>
-            </div>
-            <button class="subject-head" aria-expanded="false">
-              <span class="grid place-items-center w-10 h-10 shrink-0 rounded-xl ${ring} border ${border} ${acc}">
-                <i data-lucide="${s.icon}" class="w-5 h-5"></i>
-              </span>
-              <span class="flex-1 min-w-0">
-                <span class="block font-semibold text-white text-[15px] leading-snug">${s.name}</span>
-                <span class="block font-mono text-[10px] text-slate-500 mt-1 tracking-wider">${s.sem} · ${s.area}</span>
-              </span>
-              <i data-lucide="chevron-down" class="chev w-5 h-5 text-slate-500 shrink-0"></i>
-            </button>
+        <div class="subject-card relative flex items-center gap-3 px-4 py-3.5" data-subject>
+          <div class="timeline-node ${ring} ${border}">
+            <i data-lucide="book-open" class="w-4 h-4 ${acc}"></i>
           </div>
-
-          <div class="subject-body">
-            <div class="px-5 pb-5 pt-1 border-t border-white/5">
-              <p class="mt-3 text-sm text-slate-400 leading-relaxed">${s.desc}</p>
-
-              <div class="mt-4">
-                <p class="stat-label mb-2">TECNOLOGÍAS Y HERRAMIENTAS</p>
-                <div class="flex flex-wrap gap-1.5">${tech}</div>
-              </div>
-
-              <div class="mt-4">
-                <p class="stat-label mb-2">CONTENIDOS CLAVE</p>
-                <ul class="grid sm:grid-cols-2 gap-x-6 gap-y-1 text-sm">${topics}</ul>
-              </div>
-            </div>
-          </div>
+          <span class="grid place-items-center w-9 h-9 shrink-0 rounded-xl ${ring} border ${border} ${acc} font-mono text-[12px] font-bold">
+            ${String(i + 1).padStart(2, '0')}
+          </span>
+          <span class="flex-1 min-w-0 font-semibold text-white text-[15px] leading-snug">${name}</span>
         </div>`;
     });
 
@@ -282,17 +253,6 @@
         c.style.transition = 'opacity .5s ease, transform .5s cubic-bezier(.2,.8,.25,1)';
         c.style.opacity = '1'; c.style.transform = 'none';
       }, 60 + i * 70);
-    });
-
-    // Acordeón
-    $$('.subject-head', planContent).forEach(btn => {
-      btn.addEventListener('click', () => {
-        const card = btn.closest('[data-subject]');
-        const body = card.querySelector('.subject-body');
-        const open = card.classList.toggle('open');
-        btn.setAttribute('aria-expanded', String(open));
-        body.style.maxHeight = open ? body.scrollHeight + 'px' : '0px';
-      });
     });
   }
 
