@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Ingeniería de Sistemas | Universidad Amazónica de Pando — Diseña el Futuro Digital</title>
+<meta name="description" content="Carrera de Ingeniería de Sistemas de la Universidad Amazónica de Pando (UAP). Formando arquitectos de software, especialistas en IA, IoT y ciberseguridad. Plan de estudios de 5 años, laboratorios de última generación y salida laboral 100%." />
+<meta name="theme-color" content="#05070f" />
+<meta property="og:title" content="DISEÑA EL FUTURO DIGITAL — Ing. de Sistemas UAP" />
+<meta property="og:description" content="5 años · Labs de última generación · 100% salida laboral. Únete a la carrera de Ingeniería de Sistemas de la Universidad Amazónica de Pando." />
+<meta property="og:type" content="website" />
+
+<!-- ═══════════════ FONTS ═══════════════ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- ═══════════════ TAILWIND CSS (CDN) ═══════════════ -->
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script>
+  /* ── Configuración personalizada de Tailwind (paleta cyberpunk dark-tech) ── */
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          void:    '#05070f',
+          panel:   '#0a0e1c',
+          neon: {
+            cyan:    '#00f0ff',
+            magenta: '#ff2fd6',
+            lime:    '#a6ff00',
+            violet:  '#8b5cf6',
+            amber:   '#ffb020'
+          }
+        },
+        fontFamily: {
+          display: ['Orbitron', 'sans-serif'],
+          tech:    ['Rajdhani', 'sans-serif'],
+          mono:    ['JetBrains Mono', 'monospace']
+        },
+        boxShadow: {
+          'neon-cyan':    '0 0 22px -4px rgba(0,240,255,.55), 0 0 60px -18px rgba(0,240,255,.45)',
+          'neon-magenta': '0 0 22px -4px rgba(255,47,214,.55), 0 0 60px -18px rgba(255,47,214,.45)',
+          'glass':        '0 8px 40px -12px rgba(0,0,0,.75)'
+        },
+        animation: {
+          'float':      'float 6s ease-in-out infinite',
+          'float-slow': 'float 8.5s ease-in-out infinite',
+          'pulse-glow': 'pulseGlow 2.6s ease-in-out infinite',
+          'scan':       'scan 7s linear infinite',
+          'marquee':    'marquee 26s linear infinite',
+          'spin-slow':  'spin 9s linear infinite'
+        },
+        keyframes: {
+          float:      { '0%,100%': { transform:'translateY(0)' }, '50%': { transform:'translateY(-16px)' } },
+          pulseGlow:  { '0%,100%': { opacity:.55 }, '50%': { opacity:1 } },
+          scan:       { '0%': { transform:'translateY(-100%)' }, '100%': { transform:'translateY(1000%)' } },
+          marquee:    { '0%': { transform:'translateX(0)' }, '100%': { transform:'translateX(-50%)' } }
+        }
+      }
+    }
+  }
+</script>
+
+<!-- Marca que JS está activo: permite ocultar inicialmente los elementos
+     .reveal solo cuando hay JS (si no, todo el contenido queda visible). -->
+<script>document.documentElement.classList.add('js');</script>
+
+<!-- ═══════════════ ICONOGRAFÍA ═══════════════ -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<!-- Font Awesome: usado únicamente para iconos de MARCAS (redes sociales),
+     que Lucide no distribuye por derechos de marca. -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+
+<!-- ═══════════════ THREE.JS (partículas 3D + Cubo Rubik) ═══════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!-- ═══════════════ Generador de QR (fallback incluido) ═══════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<!-- ═══════════════ ESTILOS PROPIOS ═══════════════ -->
+<link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="bg-void text-slate-200 font-tech antialiased overflow-x-hidden selection:bg-neon-cyan selection:text-void">
+
+<!-- ══════════════ PRELOADER ══════════════ -->
+<div id="preloader" class="fixed inset-0 z-[999] bg-void grid place-items-center transition-opacity duration-700">
+  <div class="text-center">
+    <div class="relative w-24 h-24 mx-auto mb-6">
+      <div class="absolute inset-0 rounded-full border-2 border-neon-cyan/20"></div>
+      <div class="absolute inset-0 rounded-full border-2 border-transparent border-t-neon-cyan animate-spin"></div>
+      <div class="absolute inset-3 rounded-full border-2 border-transparent border-b-neon-magenta animate-spin" style="animation-direction:reverse;animation-duration:1.4s"></div>
+      <i data-lucide="cpu" class="absolute inset-0 m-auto w-7 h-7 text-neon-cyan"></i>
+    </div>
+    <p class="font-display text-xs tracking-[.4em] text-neon-cyan/80">INICIANDO SISTEMA</p>
+    <p class="font-mono text-[10px] text-slate-500 mt-2">UAP // ING. DE SISTEMAS</p>
+  </div>
+</div>
+
+<!-- ══════════════ CAPA DE PARTÍCULAS 3D (fondo global) ══════════════ -->
+<canvas id="bg-particles" class="fixed inset-0 w-full h-full -z-10 opacity-70"></canvas>
+<div class="fixed inset-0 -z-10 bg-grid pointer-events-none"></div>
+<div class="fixed inset-0 -z-10 scanlines pointer-events-none"></div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     1) NAVBAR RESPONSIVE — Glassmorphism + indicador de sección activa
+     ══════════════════════════════════════════════════════════════ -->
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 transition-all duration-500">
+  <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-3 sm:mt-4">
+    <div class="glass-nav rounded-2xl border border-white/10 px-4 sm:px-5 py-3 flex items-center justify-between gap-4">
+
+      <!-- Logo de la carrera -->
+      <a href="#hero" class="group flex items-center gap-3 shrink-0">
+        <span class="relative grid place-items-center w-10 h-10 rounded-xl bg-gradient-to-br from-neon-cyan/25 to-neon-magenta/25 border border-neon-cyan/40 shadow-neon-cyan transition-transform duration-300 group-hover:rotate-12">
+          <i data-lucide="binary" class="w-5 h-5 text-neon-cyan"></i>
+          <span class="absolute -inset-1 rounded-xl bg-neon-cyan/20 blur-md -z-10 opacity-0 group-hover:opacity-100 transition"></span>
+        </span>
+        <span class="leading-none">
+          <span class="block font-display text-[13px] sm:text-sm font-black tracking-wider text-white">ING. SISTEMAS</span>
+          <span class="block font-mono text-[9px] sm:text-[10px] text-neon-cyan/70 tracking-[.25em] mt-1">UNIV. AMAZÓNICA DE PANDO</span>
+        </span>
+      </a>
+
+      <!-- Enlaces desktop con indicador de sección activa -->
+      <ul id="nav-links" class="hidden lg:flex items-center gap-1 text-[13px] font-semibold tracking-wide">
+        <li><a href="#inicio"      class="nav-link px-3 py-2 rounded-lg" data-section="inicio">Inicio</a></li>
+        <li><a href="#mitos"       class="nav-link px-3 py-2 rounded-lg" data-section="mitos">Mitos vs Realidad</a></li>
+        <li><a href="#plan"        class="nav-link px-3 py-2 rounded-lg" data-section="plan">Plan de Estudios</a></li>
+        <li><a href="#campos"      class="nav-link px-3 py-2 rounded-lg" data-section="campos">Salida Laboral</a></li>
+        <li><a href="#juegos"      class="nav-link px-3 py-2 rounded-lg" data-section="juegos">Zona Gaming</a></li>
+        <li><a href="#eventos"     class="nav-link px-3 py-2 rounded-lg" data-section="eventos">Eventos</a></li>
+      </ul>
+
+      <!-- CTA con Glow -->
+      <div class="flex items-center gap-2">
+        <a href="#plan" class="hidden sm:inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold tracking-wide
+                               bg-gradient-to-r from-neon-cyan to-neon-violet text-void shadow-neon-cyan
+                               hover:shadow-[0_0_34px_-4px_rgba(0,240,255,.85)] transition-all duration-300 hover:-translate-y-0.5">
+          <i data-lucide="rocket" class="w-4 h-4"></i>
+          Explorar Plan de Estudios
+        </a>
+
+        <!-- Menú hamburguesa animado -->
+        <button id="menu-btn" aria-label="Abrir menú" aria-expanded="false"
+                class="lg:hidden grid place-items-center w-10 h-10 rounded-xl border border-white/10 bg-white/5 active:scale-90 transition">
+          <span class="burger block w-5 relative">
+            <span class="burger-line block h-[2px] w-5 bg-neon-cyan rounded-full transition-all duration-300"></span>
+            <span class="burger-line block h-[2px] w-5 bg-neon-cyan rounded-full my-[5px] transition-all duration-300"></span>
+            <span class="burger-line block h-[2px] w-5 bg-neon-cyan rounded-full transition-all duration-300"></span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menú móvil desplegable -->
+    <div id="mobile-menu" class="lg:hidden overflow-hidden max-h-0 transition-[max-height] duration-500 ease-out">
+      <ul class="mt-2 glass-nav rounded-2xl border border-white/10 p-3 space-y-1 text-sm font-semibold">
+        <li><a href="#inicio"  class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl"><i data-lucide="home"        class="w-4 h-4 text-neon-cyan"></i>Inicio</a></li>
+        <li><a href="#mitos"   class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl"><i data-lucide="scale"        class="w-4 h-4 text-neon-magenta"></i>Mitos vs Realidad</a></li>
+        <li><a href="#plan"    class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl"><i data-lucide="graduation-cap" class="w-4 h-4 text-neon-lime"></i>Plan de Estudios</a></li>
+        <li><a href="#campos"  class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl"><i data-lucide="briefcase"    class="w-4 h-4 text-neon-amber"></i>Salida Laboral</a></li>
+        <li><a href="#juegos"  class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl"><i data-lucide="gamepad-2"    class="w-4 h-4 text-neon-violet"></i>Zona Gaming</a></li>
+        <li><a href="#eventos" class="mobile-link flex items-center gap-3 px-3 py-3 rounded-xl"><i data-lucide="calendar-days" class="w-4 h-4 text-neon-cyan"></i>Eventos & QR</a></li>
+        <li class="pt-2">
+          <a href="#plan" class="mobile-link flex items-center justify-center gap-2 px-3 py-3 rounded-xl bg-gradient-to-r from-neon-cyan to-neon-violet text-void font-bold">
+            <i data-lucide="rocket" class="w-4 h-4"></i> Explorar Plan de Estudios
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Barra de progreso de scroll -->
+  <div class="absolute -bottom-px left-0 h-[2px] w-full bg-white/5">
+    <div id="scroll-progress" class="h-full w-0 bg-gradient-to-r from-neon-cyan via-neon-violet to-neon-magenta shadow-neon-cyan transition-[width] duration-150"></div>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════════════════
+     2) HERO SECTION — impacto visual + typewriter + tarjetas flotantes
+     ══════════════════════════════════════════════════════════════ -->
+<section id="inicio" data-observe class="relative min-h-[100svh] flex items-center pt-28 pb-16 overflow-hidden">
+  <!-- destellos decorativos -->
+  <div class="pointer-events-none absolute -top-24 -left-24 w-[420px] h-[420px] bg-neon-cyan/15 blur-[130px] rounded-full"></div>
+  <div class="pointer-events-none absolute bottom-0 -right-24 w-[460px] h-[460px] bg-neon-magenta/15 blur-[140px] rounded-full"></div>
+
+  <div class="mx-auto max-w-7xl px-5 sm:px-8 grid lg:grid-cols-12 gap-12 items-center w-full">
+
+    <!-- Columna textual -->
+    <div class="lg:col-span-7 reveal">
+      <span class="inline-flex items-center gap-2 rounded-full border border-neon-cyan/30 bg-neon-cyan/10 px-4 py-1.5 text-[11px] font-mono tracking-[.2em] text-neon-cyan uppercase">
+        <span class="w-1.5 h-1.5 rounded-full bg-neon-lime animate-pulse"></span>
+        Inscripciones abiertas · Cohorte 2026
+      </span>
+
+      <h1 class="mt-6 font-display font-black leading-[.95] tracking-tight text-white
+                 text-[13vw] sm:text-6xl lg:text-7xl xl:text-[5.2rem]">
+        <span class="block gradient-text-glow">DISEÑA EL</span>
+        <span class="block gradient-text-glow delay-150">FUTURO DIGITAL</span>
+      </h1>
+
+      <!-- Typewriter -->
+      <p class="mt-6 font-mono text-[13px] sm:text-base text-neon-lime min-h-[3.5rem] sm:min-h-[1.75rem]">
+        <span id="typewriter" class="whitespace-pre-wrap"></span><span class="caret">▋</span>
+      </p>
+
+      <p class="mt-5 max-w-xl text-slate-400 text-base sm:text-lg leading-relaxed">
+        Una carrera que transforma tu lógica en <strong class="text-white">arquitectura de software</strong>,
+        tus ideas en <strong class="text-white">productos inteligentes</strong> y tu talento en
+        <strong class="text-white">liderazgo tecnológico</strong> para el Amazonía boliviana y el mundo.
+      </p>
+
+      <!-- CTAs -->
+      <div class="mt-8 flex flex-wrap items-center gap-3 sm:gap-4">
+        <a href="#juegos" class="group inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-bold tracking-wide
+                                bg-gradient-to-r from-neon-magenta to-neon-violet text-white
+                                shadow-neon-magenta hover:shadow-[0_0_40px_-6px_rgba(255,47,214,.9)] transition-all duration-300 hover:-translate-y-0.5">
+          <i data-lucide="gamepad-2" class="w-5 h-5 transition-transform group-hover:rotate-12"></i>
+          Probar Zona Gaming
+        </a>
+        <a href="#eventos" class="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 font-bold tracking-wide
+                                border border-white/15 bg-white/5 hover:bg-white/10 hover:border-neon-cyan/50
+                                text-white transition-all duration-300 backdrop-blur">
+          <i data-lucide="qr-code" class="w-5 h-5 text-neon-cyan"></i>
+          Descargar Tríptico
+        </a>
+      </div>
+
+      <!-- Tecnologías (marquee) -->
+      <div class="mt-10 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
+        <div class="flex w-max animate-marquee gap-8 text-slate-500 font-mono text-xs tracking-widest uppercase">
+          <span>Python</span><span class="text-neon-cyan">◆</span><span>Java</span><span class="text-neon-magenta">◆</span>
+          <span>C++</span><span class="text-neon-lime">◆</span><span>PostgreSQL</span><span class="text-neon-violet">◆</span>
+          <span>Docker</span><span class="text-neon-amber">◆</span><span>React</span><span class="text-neon-cyan">◆</span>
+          <span>TensorFlow</span><span class="text-neon-magenta">◆</span><span>MQTT / IoT</span><span class="text-neon-lime">◆</span>
+          <span>Kubernetes</span><span class="text-neon-violet">◆</span><span>Cisco CCNA</span><span class="text-neon-amber">◆</span>
+          <!-- duplicado para loop infinito -->
+          <span>Python</span><span class="text-neon-cyan">◆</span><span>Java</span><span class="text-neon-magenta">◆</span>
+          <span>C++</span><span class="text-neon-lime">◆</span><span>PostgreSQL</span><span class="text-neon-violet">◆</span>
+          <span>Docker</span><span class="text-neon-amber">◆</span><span>React</span><span class="text-neon-cyan">◆</span>
+          <span>TensorFlow</span><span class="text-neon-magenta">◆</span><span>MQTT / IoT</span><span class="text-neon-lime">◆</span>
+          <span>Kubernetes</span><span class="text-neon-violet">◆</span><span>Cisco CCNA</span><span class="text-neon-amber">◆</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna de tarjetas flotantes + orbe 3D -->
+    <div class="lg:col-span-5 relative reveal">
+      <div class="relative mx-auto max-w-md">
+        <!-- Orbe / holograma -->
+        <div class="relative aspect-square grid place-items-center">
+          <div class="absolute inset-6 rounded-full bg-gradient-to-br from-neon-cyan/25 via-neon-violet/10 to-neon-magenta/25 blur-2xl animate-pulse-glow"></div>
+          <div class="absolute inset-10 rounded-full border border-neon-cyan/25 animate-spin-slow"></div>
+          <div class="absolute inset-16 rounded-full border border-dashed border-neon-magenta/30 animate-spin" style="animation-duration:16s;animation-direction:reverse"></div>
+          <div class="relative grid place-items-center w-32 h-32 rounded-full bg-void/70 border border-neon-cyan/40 shadow-neon-cyan backdrop-blur-xl">
+            <i data-lucide="circuit-board" class="w-14 h-14 text-neon-cyan"></i>
+            <span class="absolute inset-0 rounded-full bg-neon-cyan/10 animate-ping"></span>
+          </div>
+        </div>
+
+        <!-- Tarjetas métricas con levitación -->
+        <div class="absolute -left-2 sm:-left-8 top-2 animate-float">
+          <div class="glass-card rounded-2xl px-4 py-3 border border-neon-cyan/30 shadow-neon-cyan w-[168px]">
+            <div class="flex items-center gap-2 text-neon-cyan"><i data-lucide="calendar-range" class="w-4 h-4"></i>
+              <span class="font-mono text-[10px] tracking-widest">DURACIÓN</span></div>
+            <p class="font-display text-3xl font-black text-white mt-1">5 <span class="text-base font-semibold text-slate-400">Años</span></p>
+            <p class="text-[11px] text-slate-400 mt-0.5">10 semestres · titulación profesional</p>
+          </div>
+        </div>
+
+        <div class="absolute -right-2 sm:-right-6 top-1/3 animate-float-slow">
+          <div class="glass-card rounded-2xl px-4 py-3 border border-neon-magenta/30 shadow-neon-magenta w-[176px]">
+            <div class="flex items-center gap-2 text-neon-magenta"><i data-lucide="server-cog" class="w-4 h-4"></i>
+              <span class="font-mono text-[10px] tracking-widest">LABORATORIOS</span></div>
+            <p class="font-display text-2xl font-black text-white mt-1">LABS <span class="text-base">3.0</span></p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Última generación · IoT & Redes</p>
+          </div>
+        </div>
+
+        <div class="absolute left-4 sm:left-0 -bottom-2 animate-float" style="animation-delay:-2.4s">
+          <div class="glass-card rounded-2xl px-4 py-3 border border-neon-lime/30 shadow-neon-cyan w-[188px]">
+            <div class="flex items-center gap-2 text-neon-lime"><i data-lucide="trending-up" class="w-4 h-4"></i>
+              <span class="font-mono text-[10px] tracking-widest">EMPLEABILIDAD</span></div>
+            <p class="font-display text-3xl font-black text-white mt-1">100<span class="text-xl">%</span></p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Salida laboral inmediata</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <a href="#mitos" class="hidden sm:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-slate-500 hover:text-neon-cyan transition">
+    <span class="font-mono text-[10px] tracking-[.3em]">SCROLL</span>
+    <span class="w-px h-8 bg-gradient-to-b from-neon-cyan to-transparent"></span>
+  </a>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     3) MITOS vs REALIDAD — tarjetas con efecto Tilt 3D
+     ══════════════════════════════════════════════════════════════ -->
+<section id="mitos" data-observe class="relative py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="font-mono text-[11px] tracking-[.35em] text-neon-magenta uppercase">// Rompiendo estereotipos</span>
+      <h2 class="mt-3 font-display text-3xl sm:text-5xl font-black text-white">MITOS <span class="text-neon-magenta">vs</span> REALIDAD</h2>
+      <p class="mt-4 text-slate-400">Desliza sobre cada tarjeta para descubrir la verdad detrás de la carrera.</p>
+    </div>
+
+    <div class="mt-14 grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- Par 1 -->
+      <article class="tilt-card group" data-tilt>
+        <div class="tilt-inner glass-card rounded-3xl border border-white/10 p-6 h-full relative overflow-hidden">
+          <div class="absolute -top-16 -right-16 w-40 h-40 bg-red-500/10 blur-3xl rounded-full group-hover:bg-red-500/20 transition"></div>
+          <div class="flex items-center gap-2 text-red-400 font-mono text-[11px] tracking-widest">
+            <i data-lucide="x-circle" class="w-4 h-4"></i> MITO
+          </div>
+          <h3 class="mt-3 font-display text-lg font-bold text-white">"Solo es soporte técnico y arreglar computadoras"</h3>
+          <div class="my-4 h-px bg-gradient-to-r from-red-500/50 via-white/10 to-transparent"></div>
+          <div class="flex items-start gap-2 text-neon-lime font-mono text-[11px] tracking-widest">
+            <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 mt-0.5"></i> REALIDAD
+          </div>
+          <p class="mt-2 text-slate-300 text-sm leading-relaxed">
+            Diseñas <strong class="text-white">arquitecturas de software escalables</strong>, construyes productos
+            completos (web, móvil, cloud) y diriges equipos que crean tecnología desde cero.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="badge">Arquitectura</span><span class="badge">Cloud</span><span class="badge">DevOps</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tilt-card group" data-tilt>
+        <div class="tilt-inner glass-card rounded-3xl border border-white/10 p-6 h-full relative overflow-hidden">
+          <div class="absolute -top-16 -right-16 w-40 h-40 bg-red-500/10 blur-3xl rounded-full group-hover:bg-red-500/20 transition"></div>
+          <div class="flex items-center gap-2 text-red-400 font-mono text-[11px] tracking-widest">
+            <i data-lucide="x-circle" class="w-4 h-4"></i> MITO
+          </div>
+          <h3 class="mt-3 font-display text-lg font-bold text-white">"Solo programación y nada más"</h3>
+          <div class="my-4 h-px bg-gradient-to-r from-red-500/50 via-white/10 to-transparent"></div>
+          <div class="flex items-start gap-2 text-neon-lime font-mono text-[11px] tracking-widest">
+            <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 mt-0.5"></i> REALIDAD
+          </div>
+          <p class="mt-2 text-slate-300 text-sm leading-relaxed">
+            Integramos <strong class="text-white">hardware, redes, bases de datos, IA y gestión de proyectos</strong>.
+            Es una ingeniería completa: matemática, procesos y negocio se unen al código.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="badge">Robótica</span><span class="badge">Gestión PMO</span><span class="badge">IA</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tilt-card group" data-tilt>
+        <div class="tilt-inner glass-card rounded-3xl border border-white/10 p-6 h-full relative overflow-hidden">
+          <div class="absolute -top-16 -right-16 w-40 h-40 bg-red-500/10 blur-3xl rounded-full group-hover:bg-red-500/20 transition"></div>
+          <div class="flex items-center gap-2 text-red-400 font-mono text-[11px] tracking-widest">
+            <i data-lucide="x-circle" class="w-4 h-4"></i> MITO
+          </div>
+          <h3 class="mt-3 font-display text-lg font-bold text-white">"No hay trabajo en Pando / Bolivia"</h3>
+          <div class="my-4 h-px bg-gradient-to-r from-red-500/50 via-white/10 to-transparent"></div>
+          <div class="flex items-start gap-2 text-neon-lime font-mono text-[11px] tracking-widest">
+            <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 mt-0.5"></i> REALIDAD
+          </div>
+          <p class="mt-2 text-slate-300 text-sm leading-relaxed">
+            El perfil es <strong class="text-white">remoto y global</strong>: consultorías, banca, minería, ONG,
+            startups y entidades públicas demandan profesionales en sistemas.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="badge">Remote First</span><span class="badge">Freelance</span><span class="badge">Startup</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tilt-card group" data-tilt>
+        <div class="tilt-inner glass-card rounded-3xl border border-white/10 p-6 h-full relative overflow-hidden">
+          <div class="absolute -top-16 -right-16 w-40 h-40 bg-red-500/10 blur-3xl rounded-full group-hover:bg-red-500/20 transition"></div>
+          <div class="flex items-center gap-2 text-red-400 font-mono text-[11px] tracking-widest">
+            <i data-lucide="x-circle" class="w-4 h-4"></i> MITO
+          </div>
+          <h3 class="mt-3 font-display text-lg font-bold text-white">"Es muy difícil, necesito ser un genio"</h3>
+          <div class="my-4 h-px bg-gradient-to-r from-red-500/50 via-white/10 to-transparent"></div>
+          <div class="flex items-start gap-2 text-neon-lime font-mono text-[11px] tracking-widest">
+            <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 mt-0.5"></i> REALIDAD
+          </div>
+          <p class="mt-2 text-slate-300 text-sm leading-relaxed">
+            Se aprende con <strong class="text-white">método, práctica y comunidad</strong>. La lógica se entrena:
+            empezamos desde los fundamentos y avanzamos con proyectos reales guiados.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="badge">Mentoría</span><span class="badge">Proyectos reales</span><span class="badge">Tutorías</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="tilt-card group" data-tilt>
+        <div class="tilt-inner glass-card rounded-3xl border border-white/10 p-6 h-full relative overflow-hidden">
+          <div class="absolute -top-16 -right-16 w-40 h-40 bg-red-500/10 blur-3xl rounded-full group-hover:bg-red-500/20 transition"></div>
+          <div class="flex items-center gap-2 text-red-400 font-mono text-[11px] tracking-widest">
+            <i data-lucide="x-circle" class="w-4 h-4"></i> MITO
+          </div>
+          <h3 class="mt-3 font-display text-lg font-bold text-white">"Solo sirve para trabajar en empresas grandes"</h3>
+          <div class="my-4 h-px bg-gradient-to-r from-red-500/50 via-white/10 to-transparent"></div>
+          <div class="flex items-start gap-2 text-neon-lime font-mono text-[11px] tracking-widest">
+            <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 mt-0.5"></i> REALIDAD
+          </div>
+          <p class="mt-2 text-slate-300 text-sm leading-relaxed">
+            Puedes <strong class="text-white">crear tu propia startup</strong>, ser freelancer, emprender un laboratorio
+            de IA o consultoría. El conocimiento es tu activo principal.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="badge">Emprendimiento</span><span class="badge">Consultoría</span><span class="badge">Producto</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Tarjeta CTA final -->
+      <article class="tilt-card group" data-tilt>
+        <div class="tilt-inner rounded-3xl p-6 h-full relative overflow-hidden
+                    bg-gradient-to-br from-neon-cyan/15 via-neon-violet/10 to-neon-magenta/15 border border-neon-cyan/30">
+          <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,240,255,.25),transparent_60%)]"></div>
+          <div class="relative">
+            <div class="grid place-items-center w-12 h-12 rounded-2xl bg-neon-cyan/15 border border-neon-cyan/40">
+              <i data-lucide="zap" class="w-6 h-6 text-neon-cyan"></i>
+            </div>
+            <h3 class="mt-4 font-display text-xl font-black text-white">¿Y si lo veo con mis propios ojos?</h3>
+            <p class="mt-2 text-slate-300 text-sm leading-relaxed">
+              Asiste a nuestra <strong class="text-white">Charla Orientativa en LAB 3</strong> y prueba un reto de
+              algoritmos en vivo. Sin compromiso.
+            </p>
+            <a href="#eventos" class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-neon-cyan hover:gap-3 transition-all">
+              Ver detalles del evento <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     4) RUTA ACADÉMICA INTERACTIVA — tabs 1.º a 5.º año
+     ══════════════════════════════════════════════════════════════ -->
+<section id="plan" data-observe class="relative py-24 sm:py-32 bg-gradient-to-b from-transparent via-panel/60 to-transparent">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="font-mono text-[11px] tracking-[.35em] text-neon-lime uppercase">// Ruta académica</span>
+      <h2 class="mt-3 font-display text-3xl sm:text-5xl font-black text-white">PLAN DE <span class="gradient-text-glow">ESTUDIOS</span></h2>
+      <p class="mt-4 text-slate-400">Cinco años, diez semestres. Selecciona un año para desplegar sus asignaturas y tecnologías.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="mt-10 reveal">
+      <div role="tablist" id="year-tabs" class="flex gap-2 sm:gap-3 overflow-x-auto pb-3 -mx-2 px-2 snap-x [scrollbar-width:none] [&::-webkit-scrollbar]:hidden justify-start sm:justify-center">
+        <button role="tab" class="year-tab snap-center" data-year="1" aria-selected="true">
+          <span class="font-display text-xl font-black">1.º</span><span class="block text-[10px] tracking-widest opacity-70">AÑO</span>
+        </button>
+        <button role="tab" class="year-tab snap-center" data-year="2" aria-selected="false">
+          <span class="font-display text-xl font-black">2.º</span><span class="block text-[10px] tracking-widest opacity-70">AÑO</span>
+        </button>
+        <button role="tab" class="year-tab snap-center" data-year="3" aria-selected="false">
+          <span class="font-display text-xl font-black">3.º</span><span class="block text-[10px] tracking-widest opacity-70">AÑO</span>
+        </button>
+        <button role="tab" class="year-tab snap-center" data-year="4" aria-selected="false">
+          <span class="font-display text-xl font-black">4.º</span><span class="block text-[10px] tracking-widest opacity-70">AÑO</span>
+        </button>
+        <button role="tab" class="year-tab snap-center" data-year="5" aria-selected="false">
+          <span class="font-display text-xl font-black">5.º</span><span class="block text-[10px] tracking-widest opacity-70">AÑO</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenido del plan (renderizado por JS) -->
+    <div class="mt-8 relative reveal">
+      <!-- línea vertical del timeline -->
+      <div class="hidden md:block absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-neon-cyan/60 via-neon-violet/40 to-transparent"></div>
+      <div id="plan-content" class="space-y-4 md:pl-20"><!-- inyectado por JS --></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     5) CAMPOS DE ACCIÓN Y SALIDA LABORAL — grid con Glow Hover
+     ══════════════════════════════════════════════════════════════ -->
+<section id="campos" data-observe class="relative py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="font-mono text-[11px] tracking-[.35em] text-neon-amber uppercase">// Elige tu especialidad</span>
+      <h2 class="mt-3 font-display text-3xl sm:text-5xl font-black text-white">CAMPOS DE ACCIÓN <span class="text-neon-amber">&amp;</span> SALIDA LABORAL</h2>
+      <p class="mt-4 text-slate-400">Un solo título, cinco rutas profesionales de alto valor.</p>
+    </div>
+
+    <div class="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+
+      <!-- 1 -->
+      <a href="#juegos" class="glow-card group reveal">
+        <span class="glow-spot"></span>
+        <div class="relative p-6 h-full">
+          <div class="flex items-start justify-between">
+            <div class="grid place-items-center w-12 h-12 rounded-2xl bg-neon-cyan/10 border border-neon-cyan/30 text-neon-cyan
+                        transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+              <i data-lucide="code-2" class="w-6 h-6"></i>
+            </div>
+            <span class="font-mono text-[10px] text-slate-600">01</span>
+          </div>
+          <h3 class="mt-5 font-display text-lg font-bold text-white group-hover:text-neon-cyan transition">Desarrollo Full Stack &amp; Mobile</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">Construye aplicaciones web y móviles extremo a extremo, de la base de datos a la interfaz.</p>
+          <ul class="mt-4 space-y-1.5 text-[13px] text-slate-500">
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-cyan shrink-0"></i>React · Node.js · Flutter</li>
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-cyan shrink-0"></i>APIs REST &amp; Microservicios</li>
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-cyan shrink-0"></i>Docker · CI/CD</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="chip">Dev Web</span><span class="chip">App Móvil</span><span class="chip">Freelance</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 2 -->
+      <a href="#juegos" class="glow-card group reveal" style="transition-delay:.06s">
+        <span class="glow-spot"></span>
+        <div class="relative p-6 h-full">
+          <div class="flex items-start justify-between">
+            <div class="grid place-items-center w-12 h-12 rounded-2xl bg-neon-magenta/10 border border-neon-magenta/30 text-neon-magenta
+                        transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
+              <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+            </div>
+            <span class="font-mono text-[10px] text-slate-600">02</span>
+          </div>
+          <h3 class="mt-5 font-display text-lg font-bold text-white group-hover:text-neon-magenta transition">Inteligencia Artificial &amp; IoT</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">Entrena modelos inteligentes y conecta el mundo físico con sensores y sistemas embebidos.</p>
+          <ul class="mt-4 space-y-1.5 text-[13px] text-slate-500">
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-magenta shrink-0"></i>Python · TensorFlow · YOLO</li>
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-magenta shrink-0"></i>Arduino · ESP32 · MQTT</li>
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-magenta shrink-0"></i>Visión por computadora</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="chip">Data Scientist</span><span class="chip">IoT Engineer</span><span class="chip">Robotics</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 3 -->
+      <a href="#juegos" class="glow-card group reveal" style="transition-delay:.12s">
+        <span class="glow-spot"></span>
+        <div class="relative p-6 h-full">
+          <div class="flex items-start justify-between">
+            <div class="grid place-items-center w-12 h-12 rounded-2xl bg-neon-lime/10 border border-neon-lime/30 text-neon-lime
+                        transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+              <i data-lucide="database" class="w-6 h-6"></i>
+            </div>
+            <span class="font-mono text-[10px] text-slate-600">03</span>
+          </div>
+          <h3 class="mt-5 font-display text-lg font-bold text-white group-hover:text-neon-lime transition">Bases de Datos &amp; Big Data</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">Modela, almacena y analiza millones de registros para convertir datos en decisiones.</p>
+          <ul class="mt-4 space-y-1.5 text-[13px] text-slate-500">
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-lime shrink-0"></i>PostgreSQL · MySQL · MongoDB</li>
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-lime shrink-0"></i>ETL · Data Warehousing</li>
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-lime shrink-0"></i>Power BI · Dashboards</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="chip">DBA</span><span class="chip">Data Analyst</span><span class="chip">BI</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 4 -->
+      <a href="#juegos" class="glow-card group reveal">
+        <span class="glow-spot"></span>
+        <div class="relative p-6 h-full">
+          <div class="flex items-start justify-between">
+            <div class="grid place-items-center w-12 h-12 rounded-2xl bg-neon-violet/10 border border-neon-violet/30 text-neon-violet
+                        transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6">
+              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            </div>
+            <span class="font-mono text-[10px] text-slate-600">04</span>
+          </div>
+          <h3 class="mt-5 font-display text-lg font-bold text-white group-hover:text-neon-violet transition">Ciberseguridad &amp; Redes</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">Protege infraestructuras críticas, audita vulnerabilidades y defiende la información.</p>
+          <ul class="mt-4 space-y-1.5 text-[13px] text-slate-500">
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-violet shrink-0"></i>Cisco CCNA · Firewalls</li>
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-violet shrink-0"></i>Pentesting · OWASP Top 10</li>
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-violet shrink-0"></i>Criptografía · SOC</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="chip">Ethical Hacker</span><span class="chip">Network Eng.</span><span class="chip">SOC Analyst</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 5 -->
+      <a href="#juegos" class="glow-card group reveal" style="transition-delay:.06s">
+        <span class="glow-spot"></span>
+        <div class="relative p-6 h-full">
+          <div class="flex items-start justify-between">
+            <div class="grid place-items-center w-12 h-12 rounded-2xl bg-neon-amber/10 border border-neon-amber/30 text-neon-amber
+                        transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
+              <i data-lucide="kanban" class="w-6 h-6"></i>
+            </div>
+            <span class="font-mono text-[10px] text-slate-600">05</span>
+          </div>
+          <h3 class="mt-5 font-display text-lg font-bold text-white group-hover:text-neon-amber transition">Dirección de Proyectos (PMO)</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">Lidera equipos, alcance, tiempos y presupuestos con metodologías ágiles y de gobierno.</p>
+          <ul class="mt-4 space-y-1.5 text-[13px] text-slate-500">
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-amber shrink-0"></i>Scrum · Kanban · SAFe</li>
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-amber shrink-0"></i>ITIL · Gobernanza</li>
+            <li class="flex gap-2"><i data-lucide="chevron-right" class="w-4 h-4 text-neon-amber shrink-0"></i>Producto &amp; Stakeholders</li>
+          </ul>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="chip">PM</span><span class="chip">Scrum Master</span><span class="chip">Product Owner</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 6: tarjeta de contraste / CTA -->
+      <a href="#eventos" class="glow-card group reveal" style="transition-delay:.12s">
+        <span class="glow-spot"></span>
+        <div class="relative p-6 h-full">
+          <div class="flex items-start justify-between">
+            <div class="grid place-items-center w-12 h-12 rounded-2xl bg-white/5 border border-white/15 text-white
+                        transition-transform duration-300 group-hover:scale-110">
+              <i data-lucide="rocket" class="w-6 h-6"></i>
+            </div>
+            <span class="font-mono text-[10px] text-slate-600">06</span>
+          </div>
+          <h3 class="mt-5 font-display text-lg font-bold text-white">Tu ruta empieza hoy</h3>
+          <p class="mt-2 text-sm text-slate-400 leading-relaxed">
+            No necesitas saberlo todo para comenzar: solo curiosidad, constancia y ganas de construir.
+          </p>
+          <div class="mt-5 rounded-xl border border-white/10 bg-white/5 p-4 group-hover:border-neon-cyan/40 transition">
+            <p class="font-mono text-[11px] text-neon-cyan">&gt; next_step = "inscripción_uap"</p>
+            <p class="font-mono text-[11px] text-slate-500 mt-1">&gt; await tu_decisión();</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     6) ZONA GAMING — Tetris · Cubo Rubik · Ajedrez
+     ══════════════════════════════════════════════════════════════ -->
+<section id="juegos" data-observe class="relative py-24 sm:py-32 bg-gradient-to-b from-panel/70 via-transparent to-panel/70">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="inline-flex items-center gap-2 rounded-full border border-neon-violet/40 bg-neon-violet/10 px-4 py-1.5 font-mono text-[11px] tracking-[.2em] text-neon-violet uppercase">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Zona interactiva
+      </span>
+      <h2 class="mt-4 font-display text-3xl sm:text-5xl font-black text-white">JUEGA <span class="gradient-text-glow">Y APRENDE</span></h2>
+      <p class="mt-4 text-slate-400">Tres retos completamente jugables. Pasa el cursor o toca para interactuar.</p>
+    </div>
+
+    <!-- Tabs de juegos -->
+    <div class="mt-10 flex justify-center reveal">
+      <div class="inline-flex flex-wrap justify-center gap-1.5 rounded-2xl border border-white/10 bg-white/5 p-1.5 backdrop-blur-xl">
+        <button class="game-tab" data-game="tetris" aria-selected="true">
+          <i data-lucide="blocks" class="w-4 h-4"></i> 🧩 Tetris Tech
+        </button>
+        <button class="game-tab" data-game="rubik" aria-selected="false">
+          <i data-lucide="box" class="w-4 h-4"></i> 🎲 Cubo Rubik 3D
+        </button>
+        <button class="game-tab" data-game="chess" aria-selected="false">
+          <i data-lucide="crown" class="w-4 h-4"></i> ♟️ Ajedrez Virtual
+        </button>
+      </div>
+    </div>
+
+    <!-- Panels de juegos -->
+    <div class="mt-8 reveal">
+
+      <!-- ─── TETRIS ─── -->
+      <div id="game-tetris" class="game-panel">
+        <div class="glass-card rounded-3xl border border-neon-cyan/20 p-4 sm:p-6">
+          <div class="grid lg:grid-cols-[auto_1fr] gap-6 items-start">
+
+            <!-- Tablero -->
+            <div class="mx-auto lg:mx-0">
+              <div class="relative rounded-2xl border border-neon-cyan/30 bg-void/80 p-2 shadow-neon-cyan">
+                <canvas id="tetris-canvas" width="300" height="600" class="block w-[min(78vw,300px)] h-auto rounded-lg touch-none"></canvas>
+                <div id="tetris-overlay" class="absolute inset-2 rounded-lg bg-void/90 backdrop-blur-sm grid place-items-center text-center p-6">
+                  <div>
+                    <p class="font-display text-2xl font-black text-neon-cyan">TETRIS TECH</p>
+                    <p class="text-slate-400 text-sm mt-2 max-w-[220px] mx-auto">Ordena los bloques y demuestra tu lógica espacial.</p>
+                    <button id="tetris-start" class="mt-5 rounded-xl px-6 py-3 font-bold bg-neon-cyan text-void hover:shadow-neon-cyan transition">
+                      ▶ JUGAR
+                    </button>
+                    <p class="mt-3 font-mono text-[10px] text-slate-500">PC: ← → ↓ ↑ · Espacio = hard drop · P = pausa</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel lateral -->
+            <div class="space-y-4">
+              <div class="grid grid-cols-3 gap-3">
+                <div class="stat-box"><span class="stat-label">SCORE</span><span id="tetris-score" class="stat-value text-neon-cyan">0</span></div>
+                <div class="stat-box"><span class="stat-label">NIVEL</span><span id="tetris-level" class="stat-value text-neon-violet">1</span></div>
+                <div class="stat-box"><span class="stat-label">LÍNEAS</span><span id="tetris-lines" class="stat-value text-neon-lime">0</span></div>
+              </div>
+
+              <!-- Siguiente pieza -->
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <span class="stat-label">SIGUIENTE</span>
+                <canvas id="tetris-next" width="120" height="90" class="mt-2 block w-full h-auto rounded-lg bg-void/60"></canvas>
+              </div>
+
+              <!-- Controles táctiles -->
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <span class="stat-label">CONTROLES TÁCTILES</span>
+                <div class="mt-3 grid grid-cols-3 gap-2 max-w-[260px] mx-auto select-none">
+                  <button class="t-btn" data-act="left"  aria-label="Izquierda"><i data-lucide="arrow-left"  class="w-5 h-5 mx-auto"></i></button>
+                  <button class="t-btn" data-act="down"  aria-label="Abajo"><i data-lucide="arrow-down"  class="w-5 h-5 mx-auto"></i></button>
+                  <button class="t-btn" data-act="right" aria-label="Derecha"><i data-lucide="arrow-right" class="w-5 h-5 mx-auto"></i></button>
+                  <button class="t-btn" data-act="ccw"   aria-label="Girar izquierda"><i data-lucide="rotate-ccw" class="w-5 h-5 mx-auto"></i></button>
+                  <button class="t-btn col-span-1" data-act="drop" aria-label="Caída rápida"><i data-lucide="chevrons-down" class="w-5 h-5 mx-auto"></i></button>
+                  <button class="t-btn" data-act="cw"    aria-label="Girar derecha"><i data-lucide="rotate-cw" class="w-5 h-5 mx-auto"></i></button>
+                </div>
+              </div>
+
+              <div class="flex gap-3">
+                <button id="tetris-pause" class="flex-1 rounded-xl px-4 py-3 font-bold text-sm border border-white/15 bg-white/5 hover:bg-white/10 transition">⏸ Pausa</button>
+                <button id="tetris-reset" class="flex-1 rounded-xl px-4 py-3 font-bold text-sm border border-neon-magenta/30 text-neon-magenta bg-neon-magenta/10 hover:bg-neon-magenta/20 transition">↺ Reiniciar</button>
+              </div>
+
+              <p class="text-[12px] text-slate-500 leading-relaxed">
+                <i data-lucide="info" class="w-3.5 h-3.5 inline -mt-0.5 text-neon-cyan"></i>
+                Velocidad incremental: cada 10 líneas el juego acelera. Combina 4 líneas de una vez para <strong class="text-neon-amber">TETRIS</strong> (+800).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── CUBO RUBIK 3D ─── -->
+      <div id="game-rubik" class="game-panel hidden">
+        <div class="glass-card rounded-3xl border border-neon-magenta/20 p-4 sm:p-6">
+          <div class="grid lg:grid-cols-[1fr_auto] gap-6 items-center">
+            <div class="relative rounded-2xl border border-neon-magenta/25 bg-gradient-to-br from-void/90 to-panel/70 overflow-hidden shadow-neon-magenta">
+              <canvas id="rubik-canvas" class="block w-full h-[340px] sm:h-[440px] touch-none cursor-grab active:cursor-grabbing"></canvas>
+              <div class="absolute top-3 left-3 font-mono text-[10px] text-neon-magenta/80 tracking-widest pointer-events-none">
+                // ARRASTRA PARA ROTAR · RUEDA = ZOOM
+              </div>
+            </div>
+
+            <div class="lg:w-72 space-y-4">
+              <div class="stat-box !w-full justify-between">
+                <span class="stat-label">MOVIMIENTOS</span>
+                <span id="rubik-moves" class="stat-value text-neon-magenta text-xl">0</span>
+              </div>
+
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <span class="stat-label">GIRAR CARAS (click en botón)</span>
+                <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+                  <button class="face-btn" data-face="U">U ↑</button>
+                  <button class="face-btn" data-face="D">D ↓</button>
+                  <button class="face-btn" data-face="L">L ←</button>
+                  <button class="face-btn" data-face="R">R →</button>
+                  <button class="face-btn" data-face="F">F</button>
+                  <button class="face-btn" data-face="B">B</button>
+                </div>
+                <div class="mt-2 grid grid-cols-2 gap-2">
+                  <button id="rubik-ccw" class="t-btn !w-full">↺ Antihorario</button>
+                  <button id="rubik-cw"  class="t-btn !w-full">↻ Horario</button>
+                </div>
+              </div>
+
+              <div class="flex gap-3">
+                <button id="rubik-scramble" class="flex-1 rounded-xl px-4 py-3 font-bold text-sm bg-gradient-to-r from-neon-magenta to-neon-violet text-white hover:shadow-neon-magenta transition">🎲 Mezclar</button>
+                <button id="rubik-reset" class="flex-1 rounded-xl px-4 py-3 font-bold text-sm border border-white/15 bg-white/5 hover:bg-white/10 transition">↺ Reset</button>
+              </div>
+              <p id="rubik-status" class="font-mono text-[11px] text-neon-lime min-h-[1rem]"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── AJEDREZ ─── -->
+      <div id="game-chess" class="game-panel hidden">
+        <div class="glass-card rounded-3xl border border-neon-lime/20 p-4 sm:p-6">
+          <div class="grid lg:grid-cols-[auto_1fr] gap-6 items-start justify-items-center">
+
+            <!-- Tablero -->
+            <div class="relative">
+              <div id="chess-board" class="chess-board"></div>
+            </div>
+
+            <!-- Panel -->
+            <div class="w-full lg:max-w-sm space-y-4">
+              <div class="grid grid-cols-2 gap-3">
+                <div class="stat-box"><span class="stat-label">TURNO</span><span id="chess-turn" class="stat-value text-neon-lime text-base">BLANCAS</span></div>
+                <div class="stat-box"><span class="stat-label">JUGADAS</span><span id="chess-moves" class="stat-value text-white">0</span></div>
+              </div>
+
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <span class="stat-label">HISTORIAL</span>
+                <div id="chess-history" class="mt-2 max-h-40 overflow-y-auto space-y-1 font-mono text-[11px] text-slate-400 pr-1">
+                  <p class="text-slate-600">Sin jugadas aún.</p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <button id="chess-undo" class="rounded-xl px-4 py-3 font-bold text-sm border border-white/15 bg-white/5 hover:bg-white/10 transition">⟲ Deshacer</button>
+                <button id="chess-reset" class="rounded-xl px-4 py-3 font-bold text-sm border border-neon-lime/30 text-neon-lime bg-neon-lime/10 hover:bg-neon-lime/20 transition">↺ Nuevo</button>
+              </div>
+
+              <p id="chess-status" class="rounded-xl border border-neon-cyan/25 bg-neon-cyan/10 px-4 py-3 text-[13px] text-neon-cyan font-semibold">
+                Clic en una pieza blanca para comenzar.
+              </p>
+
+              <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <span class="stat-label">PIEZAS CAPTURADAS</span>
+                <div id="chess-captured" class="mt-2 flex flex-wrap gap-1 text-lg leading-none min-h-[1.75rem]"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nota motivacional -->
+      <div class="mt-8 relative overflow-hidden rounded-3xl border border-neon-violet/30 bg-gradient-to-r from-neon-violet/15 via-neon-cyan/10 to-neon-magenta/15 p-6 sm:p-8 text-center reveal">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(139,92,246,.3),transparent_65%)]"></div>
+        <div class="relative">
+          <i data-lucide="lightbulb" class="w-8 h-8 mx-auto text-neon-amber"></i>
+          <p class="mt-4 font-display text-lg sm:text-2xl font-bold text-white leading-snug max-w-4xl mx-auto">
+            “Detrás de cada lógica de juego hay <span class="text-neon-amber">algoritmos</span>,
+            <span class="text-neon-cyan">estructuras de datos</span> y <span class="text-neon-magenta">matemática aplicada</span>:
+            la base de la Ingeniería de Sistemas.”
+          </p>
+          <div class="mt-5 flex flex-wrap justify-center gap-2 font-mono text-[11px]">
+            <span class="chip">Matrices 2D → Tetris</span>
+            <span class="chip">Grafos → Ajedrez</span>
+            <span class="chip">Transformadas 3D → Rubik</span>
+            <span class="chip">Minimax → IA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     7) EVENTOS / CHARLA ORIENTATIVA + QR
+     ══════════════════════════════════════════════════════════════ -->
+<section id="eventos" data-observe class="relative py-24 sm:py-32">
+  <div class="mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="text-center max-w-3xl mx-auto reveal">
+      <span class="font-mono text-[11px] tracking-[.35em] text-neon-cyan uppercase">// Agenda institucional</span>
+      <h2 class="mt-3 font-display text-3xl sm:text-5xl font-black text-white">EVENTOS <span class="text-neon-cyan">&amp;</span> CHARLA ORIENTATIVA</h2>
+      <p class="mt-4 text-slate-400">Escanea el código y lleva el plan de estudios contigo.</p>
+    </div>
+
+    <div class="mt-14 grid lg:grid-cols-2 gap-6">
+
+      <!-- Card Charla -->
+      <article class="tilt-card group reveal" data-tilt>
+        <div class="tilt-inner glass-card rounded-3xl border border-neon-cyan/25 p-6 sm:p-8 h-full relative overflow-hidden">
+          <div class="absolute -bottom-24 -left-24 w-64 h-64 bg-neon-cyan/15 blur-[100px] rounded-full group-hover:bg-neon-cyan/25 transition"></div>
+          <div class="relative">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center gap-1.5 rounded-full bg-neon-cyan/15 border border-neon-cyan/40 px-3 py-1 font-mono text-[10px] tracking-widest text-neon-cyan">
+                <span class="w-1.5 h-1.5 rounded-full bg-neon-lime animate-pulse"></span> EVENTO DESTACADO
+              </span>
+              <span class="rounded-full bg-neon-magenta/15 border border-neon-magenta/40 px-3 py-1 font-mono text-[10px] tracking-widest text-neon-magenta">SECUNDARIA</span>
+            </div>
+
+            <h3 class="mt-5 font-display text-2xl sm:text-3xl font-black text-white leading-tight">
+              Charla Orientativa<br><span class="text-neon-cyan">en LAB 3</span>
+            </h3>
+            <p class="mt-3 text-slate-400 text-sm sm:text-base leading-relaxed">
+              Una tarde para descubrir qué es realmente la Ingeniería de Sistemas: demostraciones en vivo,
+              mini-reto de algoritmos, recorrido por los laboratorios y resolución de dudas con docentes y estudiantes.
+            </p>
+
+            <div class="mt-6 grid sm:grid-cols-2 gap-3">
+              <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
+                <div class="grid place-items-center w-9 h-9 rounded-lg bg-neon-cyan/15 text-neon-cyan"><i data-lucide="calendar-days" class="w-4 h-4"></i></div>
+                <div><p class="font-mono text-[10px] text-slate-500">FECHA</p><p class="text-sm font-semibold text-white">Viernes 14 de noviembre</p></div>
+              </div>
+              <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
+                <div class="grid place-items-center w-9 h-9 rounded-lg bg-neon-magenta/15 text-neon-magenta"><i data-lucide="clock" class="w-4 h-4"></i></div>
+                <div><p class="font-mono text-[10px] text-slate-500">HORA</p><p class="text-sm font-semibold text-white">16:00 – 18:00 h</p></div>
+              </div>
+              <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
+                <div class="grid place-items-center w-9 h-9 rounded-lg bg-neon-lime/15 text-neon-lime"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
+                <div><p class="font-mono text-[10px] text-slate-500">SEDE</p><p class="text-sm font-semibold text-white">LAB 3 · Campus UAP</p></div>
+              </div>
+              <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
+                <div class="grid place-items-center w-9 h-9 rounded-lg bg-neon-amber/15 text-neon-amber"><i data-lucide="users" class="w-4 h-4"></i></div>
+                <div><p class="font-mono text-[10px] text-slate-500">PÚBLICO</p><p class="text-sm font-semibold text-white">Estudiantes de secundaria</p></div>
+              </div>
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-3">
+              <a href="#" class="inline-flex items-center gap-2 rounded-xl px-5 py-3 font-bold text-sm bg-gradient-to-r from-neon-cyan to-neon-violet text-void shadow-neon-cyan hover:-translate-y-0.5 transition">
+                <i data-lucide="ticket" class="w-4 h-4"></i> Reservar mi cupo
+              </a>
+              <a href="https://wa.me/591" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-xl px-5 py-3 font-bold text-sm border border-white/15 bg-white/5 hover:bg-white/10 transition">
+                <i data-lucide="message-circle" class="w-4 h-4 text-neon-lime"></i> Consultar por WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Card QR -->
+      <article class="tilt-card group reveal" data-tilt style="transition-delay:.08s">
+        <div class="tilt-inner glass-card rounded-3xl border border-neon-magenta/25 p-6 sm:p-8 h-full relative overflow-hidden">
+          <div class="absolute -top-24 -right-24 w-64 h-64 bg-neon-magenta/15 blur-[100px] rounded-full group-hover:bg-neon-magenta/25 transition"></div>
+
+          <div class="relative">
+            <div class="flex items-center gap-2 font-mono text-[11px] tracking-widest text-neon-magenta">
+              <i data-lucide="scan-line" class="w-4 h-4"></i> GENERADOR / VISUALIZADOR QR
+            </div>
+            <h3 class="mt-4 font-display text-2xl font-black text-white">Llévate la Malla Curricular</h3>
+            <p class="mt-2 text-slate-400 text-sm leading-relaxed">
+              Apunta la cámara de tu celular al código para descargar el tríptico oficial de la carrera
+              (plan de estudios PDF, perfil de egreso y datos de admisión).
+            </p>
+
+            <!-- Controles del QR -->
+            <div class="mt-5 rounded-2xl border border-white/10 bg-white/5 p-4">
+              <label for="qr-input" class="stat-label">PERSONALIZA EL CONTENIDO DEL QR</label>
+              <div class="mt-2 flex gap-2">
+                <input id="qr-input" type="text" value="https://www.uap.edu.bo/ing-sistemas"
+                       class="flex-1 rounded-xl border border-white/10 bg-void/70 px-3 py-2.5 text-[13px] font-mono text-neon-cyan
+                              focus:border-neon-magenta/60 focus:ring-0 placeholder:text-slate-600" />
+                <button id="qr-gen" class="rounded-xl px-4 py-2.5 text-[13px] font-bold bg-neon-magenta text-white hover:shadow-neon-magenta transition">
+                  Generar
+                </button>
+              </div>
+              <div class="mt-3 flex flex-wrap gap-1.5">
+                <button class="qr-preset chip" data-url="https://www.uap.edu.bo/ing-sistemas">Malla curricular</button>
+                <button class="qr-preset chip" data-url="https://www.uap.edu.bo/admision">Admisión 2026</button>
+                <button class="qr-preset chip" data-url="https://www.uap.edu.bo/contacto">Contacto UAP</button>
+                <button class="qr-preset chip" data-url="https://www.uap.edu.bo/laboratorios">Laboratorios</button>
+              </div>
+            </div>
+
+            <!-- Visor QR -->
+            <div class="mt-5 flex flex-col sm:flex-row items-center gap-5">
+              <div id="qr-box" class="relative grid place-items-center w-48 h-48 rounded-2xl bg-white p-3 shrink-0 shadow-neon-magenta">
+                <div id="qr-code" class="grid place-items-center w-full h-full"></div>
+                <span class="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-neon-magenta rounded-tl-md"></span>
+                <span class="absolute -top-2 -right-2 w-4 h-4 border-t-2 border-r-2 border-neon-magenta rounded-tr-md"></span>
+                <span class="absolute -bottom-2 -left-2 w-4 h-4 border-b-2 border-l-2 border-neon-magenta rounded-bl-md"></span>
+                <span class="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-neon-magenta rounded-br-md"></span>
+              </div>
+
+              <div class="flex-1 text-center sm:text-left">
+                <p class="font-mono text-[11px] text-slate-500">CONTENIDO ACTUAL</p>
+                <p id="qr-url-label" class="mt-1 break-all text-[13px] font-mono text-neon-lime"></p>
+                <div class="mt-4 flex flex-wrap gap-2 justify-center sm:justify-start">
+                  <button id="qr-download" class="inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-[12px] font-bold border border-white/15 bg-white/5 hover:bg-white/10 transition">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i> Descargar PNG
+                  </button>
+                  <button id="qr-copy" class="inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-[12px] font-bold border border-white/15 bg-white/5 hover:bg-white/10 transition">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar enlace
+                  </button>
+                </div>
+                <p id="qr-msg" class="mt-2 font-mono text-[11px] text-neon-amber min-h-[1rem]"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════════════════════════════════════════════════════
+     8) FOOTER MODERNO
+     ══════════════════════════════════════════════════════════════ -->
+<footer class="relative pt-20 pb-10 border-t border-white/10 overflow-hidden">
+  <!-- luces de fondo -->
+  <div class="pointer-events-none absolute -top-40 left-1/4 w-[500px] h-[300px] bg-neon-cyan/10 blur-[120px] rounded-full"></div>
+  <div class="pointer-events-none absolute -bottom-40 right-1/4 w-[500px] h-[300px] bg-neon-magenta/10 blur-[120px] rounded-full"></div>
+
+  <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+
+      <!-- Marca -->
+      <div class="lg:col-span-1">
+        <div class="flex items-center gap-3">
+          <span class="grid place-items-center w-11 h-11 rounded-xl bg-gradient-to-br from-neon-cyan/25 to-neon-magenta/25 border border-neon-cyan/40 shadow-neon-cyan">
+            <i data-lucide="binary" class="w-5 h-5 text-neon-cyan"></i>
+          </span>
+          <span class="leading-tight">
+            <span class="block font-display text-sm font-black text-white tracking-wide">ING. DE SISTEMAS</span>
+            <span class="block font-mono text-[10px] text-neon-cyan/70 tracking-[.2em]">UAP</span>
+          </span>
+        </div>
+        <p class="mt-4 text-sm text-slate-500 leading-relaxed">
+          Formando profesionales capaces de diseñar, construir y liderar soluciones tecnológicas
+          con impacto en el Amazonía boliviano.
+        </p>
+        <div class="mt-5 flex gap-2">
+          <a href="#" aria-label="Facebook"  class="social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram" class="social-btn"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"  class="social-btn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" aria-label="YouTube"   class="social-btn"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" aria-label="GitHub"    class="social-btn"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+
+      <!-- Enlaces rápidos -->
+      <div>
+        <h4 class="font-display text-xs font-bold tracking-[.25em] text-white">NAVEGACIÓN</h4>
+        <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+          <li><a href="#inicio"  class="hover:text-neon-cyan transition">Inicio</a></li>
+          <li><a href="#mitos"   class="hover:text-neon-cyan transition">Mitos vs Realidad</a></li>
+          <li><a href="#plan"    class="hover:text-neon-cyan transition">Plan de Estudios</a></li>
+          <li><a href="#campos"  class="hover:text-neon-cyan transition">Salida Laboral</a></li>
+          <li><a href="#juegos"  class="hover:text-neon-cyan transition">Zona Gaming</a></li>
+        </ul>
+      </div>
+
+      <!-- Recursos -->
+      <div>
+        <h4 class="font-display text-xs font-bold tracking-[.25em] text-white">RECURSOS</h4>
+        <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
+          <li><a href="#eventos" class="hover:text-neon-magenta transition">Charla Orientativa</a></li>
+          <li><a href="#eventos" class="hover:text-neon-magenta transition">Descargar Tríptico (QR)</a></li>
+          <li><a href="#"        class="hover:text-neon-magenta transition">Admisión 2026</a></li>
+          <li><a href="#"        class="hover:text-neon-magenta transition">Bolsa de Trabajo</a></li>
+          <li><a href="#"        class="hover:text-neon-magenta transition">Investigación</a></li>
+        </ul>
+      </div>
+
+      <!-- Contacto -->
+      <div>
+        <h4 class="font-display text-xs font-bold tracking-[.25em] text-white">CONTACTO</h4>
+        <ul class="mt-4 space-y-3 text-sm text-slate-500">
+          <li class="flex gap-3"><i data-lucide="map-pin" class="w-4 h-4 text-neon-cyan shrink-0 mt-0.5"></i>
+            <span>Cobija, Beni — Bolivia<br>Universidad Amazónica de Pando</span></li>
+          <li class="flex gap-3"><i data-lucide="mail" class="w-4 h-4 text-neon-cyan shrink-0 mt-0.5"></i>
+            <a href="mailto:sistemas@uap.edu.bo" class="hover:text-white transition break-all">sistemas@uap.edu.bo</a></li>
+          <li class="flex gap-3"><i data-lucide="phone" class="w-4 h-4 text-neon-cyan shrink-0 mt-0.5"></i>
+            <span>+591 (3) 000 0000</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- barra inferior -->
+    <div class="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="font-mono text-[11px] text-slate-600 text-center sm:text-left">
+        © <span id="year">2026</span> Universidad Amazónica de Pando · Facultad de Ingeniería — Todos los derechos reservados.
+      </p>
+      <p class="font-mono text-[11px] text-slate-600 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-neon-lime animate-pulse"></span>
+        Hecho con <i data-lucide="heart" class="w-3 h-3 text-neon-magenta inline"></i> y mucha lógica · Ing. de Sistemas UAP
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- Botón volver arriba -->
+<button id="to-top" aria-label="Volver arriba"
+        class="fixed bottom-5 right-5 z-40 grid place-items-center w-11 h-11 rounded-xl border border-neon-cyan/40
+               bg-void/80 text-neon-cyan backdrop-blur-xl shadow-neon-cyan opacity-0 translate-y-4 pointer-events-none
+               transition-all duration-300 hover:bg-neon-cyan hover:text-void">
+  <i data-lucide="arrow-up" class="w-5 h-5"></i>
+</button>
+
+<!-- ══════════════ MÓDULOS JS ══════════════ -->
+<script src="js/particles.js"></script>
+<script src="js/plan-data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/tetris.js"></script>
+<script src="js/rubik.js"></script>
+<script src="js/chess.js"></script>
+</body>
+</html>

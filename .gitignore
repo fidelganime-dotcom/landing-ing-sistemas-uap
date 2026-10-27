@@ -1,0 +1,17 @@
+# Sistema / editores
+Thumbs.db
+Desktop.ini
+.DS_Store
+*.swp
+
+# Dependencias / builds (no aplican aquí: todo es CDN, pero por si acaso)
+node_modules/
+dist/
+.cache/
+
+# Logs
+*.log
+
+# Entornos locales
+.env
+.env.local

@@ -1,0 +1,347 @@
+/* ══════════════════════════════════════════════════════════════════
+   INGENIERÍA DE SISTEMAS · UAP
+   Estilos propios — Dark Tech / Cyberpunk / Glassmorphism
+   Complementan Tailwind CDN (se cargan después para poder sobreescribir)
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Variables globales ─────────────────────────────────────── */
+:root{
+  --neon-cyan:#00f0ff;
+  --neon-magenta:#ff2fd6;
+  --neon-lime:#a6ff00;
+  --neon-violet:#8b5cf6;
+  --neon-amber:#ffb020;
+  --void:#05070f;
+}
+
+*{ -webkit-tap-highlight-color: transparent; }
+
+html{ scroll-padding-top:92px; } /* deja espacio para la navbar fija */
+
+body{
+  background:
+    radial-gradient(1200px 700px at 15% -10%, rgba(0,240,255,.07), transparent 60%),
+    radial-gradient(1000px 700px at 90% 20%, rgba(255,47,214,.06), transparent 60%),
+    var(--void);
+  overflow-x:hidden;
+}
+
+/* Scrollbar temática */
+::-webkit-scrollbar{ width:9px; height:9px; }
+::-webkit-scrollbar-track{ background:#05070f; }
+::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,var(--neon-cyan),var(--neon-violet)); border-radius:99px; }
+::-webkit-scrollbar-thumb:hover{ background:linear-gradient(180deg,var(--neon-magenta),var(--neon-violet)); }
+
+/* ── 2. Fondos decorativos globales ────────────────────────────── */
+.bg-grid{
+  background-image:
+    linear-gradient(rgba(0,240,255,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,240,255,.045) 1px, transparent 1px);
+  background-size:56px 56px;
+  mask-image:radial-gradient(ellipse at 50% 0%, #000 30%, transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 0%, #000 30%, transparent 78%);
+}
+.scanlines{
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px);
+  opacity:.5;
+}
+
+/* ── 3. Preloader ──────────────────────────────────────────────── */
+#preloader.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+
+/* ── 4. Navbar ─────────────────────────────────────────────────── */
+.glass-nav{
+  background:rgba(10,14,28,.55);
+  backdrop-filter:blur(18px) saturate(140%);
+  -webkit-backdrop-filter:blur(18px) saturate(140%);
+  box-shadow:0 8px 40px -14px rgba(0,0,0,.8);
+  transition:background .4s ease, box-shadow .4s ease, border-color .4s ease;
+}
+#navbar.scrolled .glass-nav{
+  background:rgba(6,9,18,.82);
+  border-color:rgba(0,240,255,.18);
+  box-shadow:0 10px 44px -16px rgba(0,240,255,.35), 0 8px 40px -14px rgba(0,0,0,.85);
+}
+
+.nav-link{
+  position:relative; color:#94a3b8; transition:color .25s ease, background .25s ease;
+}
+.nav-link:hover{ color:#fff; background:rgba(255,255,255,.06); }
+.nav-link.active{ color:#00f0ff; background:rgba(0,240,255,.10); }
+.nav-link.active::after{
+  content:""; position:absolute; left:50%; bottom:2px; transform:translateX(-50%);
+  width:60%; height:2px; border-radius:99px; background:var(--neon-cyan);
+  box-shadow:0 0 10px var(--neon-cyan), 0 0 22px rgba(0,240,255,.7);
+  animation:navGlow .35s ease;
+}
+@keyframes navGlow{ from{ width:0; opacity:0 } to{ width:60%; opacity:1 } }
+
+/* Hamburguesa animada → X */
+#menu-btn.open .burger-line:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+#menu-btn.open .burger-line:nth-child(2){ opacity:0; transform:scaleX(0); }
+#menu-btn.open .burger-line:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+/* ── 5. Tipografía / degradados ────────────────────────────────── */
+.gradient-text-glow{
+  background:linear-gradient(100deg,#00f0ff 0%,#8b5cf6 42%,#ff2fd6 75%,#a6ff00 100%);
+  background-size:220% 100%;
+  -webkit-background-clip:text; background-clip:text;
+  color:transparent;
+  filter:drop-shadow(0 0 22px rgba(0,240,255,.35));
+  animation:gradShift 8s ease-in-out infinite;
+}
+.gradient-text-glow.delay-150{ animation-delay:-4s; }
+@keyframes gradShift{ 0%,100%{ background-position:0% 50% } 50%{ background-position:100% 50% } }
+
+.caret{
+  color:var(--neon-cyan); animation:blink 1s steps(1) infinite; font-weight:700;
+}
+@keyframes blink{ 0%,50%{opacity:1} 51%,100%{opacity:0} }
+
+/* ── 6. Glass card genérica ────────────────────────────────────── */
+.glass-card{
+  background:linear-gradient(160deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  box-shadow:0 10px 44px -18px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.06);
+  transition:transform .45s cubic-bezier(.2,.8,.25,1), box-shadow .45s ease, border-color .45s ease;
+}
+.glass-card:hover{
+  box-shadow:0 18px 60px -20px rgba(0,240,255,.35), inset 0 1px 0 rgba(255,255,255,.09);
+}
+
+/* ── 7. Reveal on scroll ───────────────────────────────────────── */
+/* Solo se ocultan si JavaScript está activo (html.js): si no hay JS —o si el
+   script falla— todo el contenido sigue siendo visible y legible. */
+.js .reveal{
+  opacity:0; transform:translateY(34px);
+  transition:opacity .8s cubic-bezier(.2,.7,.3,1), transform .8s cubic-bezier(.2,.7,.3,1);
+  will-change:opacity, transform;
+}
+.js .reveal.in{ opacity:1; transform:none; }
+@media (prefers-reduced-motion:reduce){
+  .js .reveal{ opacity:1 !important; transform:none !important; }
+  *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+}
+
+/* ── 8. Tarjetas con efecto Tilt 3D ────────────────────────────── */
+.tilt-card{
+  perspective:1100px;
+  transform-style:preserve-3d;
+}
+.tilt-inner{
+  transform-style:preserve-3d;
+  transition:transform .35s cubic-bezier(.2,.8,.25,1), box-shadow .35s ease;
+  will-change:transform;
+}
+.tilt-card:hover .tilt-inner{
+  box-shadow:0 26px 70px -26px rgba(0,240,255,.45), inset 0 1px 0 rgba(255,255,255,.09);
+}
+.tilt-card:hover{ border-color:rgba(0,240,255,.35); }
+.tilt-inner::before{ /* brillo que sigue al mouse */
+  content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%), rgba(0,240,255,.14), transparent 62%);
+  opacity:0; transition:opacity .35s ease;
+}
+.tilt-card:hover .tilt-inner::before{ opacity:1; }
+
+/* ── 9. Badges / chips ─────────────────────────────────────────── */
+.badge{
+  font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.1em;
+  padding:4px 9px; border-radius:99px; text-transform:uppercase;
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); color:#cbd5e1;
+}
+.chip{
+  font-family:'JetBrains Mono',monospace; font-size:10.5px;
+  padding:4px 9px; border-radius:8px;
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.10); color:#94a3b8;
+  transition:all .25s ease; display:inline-block;
+}
+button.chip:hover, a.chip:hover{
+  background:rgba(0,240,255,.12); border-color:rgba(0,240,255,.45); color:#00f0ff;
+  transform:translateY(-2px);
+}
+
+/* ── 10. Tabs del plan de estudios ─────────────────────────────── */
+.year-tab{
+  flex:0 0 auto; min-width:96px; padding:12px 22px; border-radius:16px; text-align:center;
+  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10);
+  color:#94a3b8; transition:all .3s cubic-bezier(.2,.8,.25,1);
+  font-family:'Orbitron',sans-serif; text-transform:uppercase;
+}
+.year-tab:hover{ color:#fff; border-color:rgba(0,240,255,.35); transform:translateY(-3px); }
+.year-tab[aria-selected="true"]{
+  color:#05070f; font-weight:900;
+  background:linear-gradient(135deg,var(--neon-cyan),var(--neon-lime));
+  border-color:transparent;
+  box-shadow:0 0 26px -4px rgba(0,240,255,.75), 0 0 60px -18px rgba(166,255,0,.6);
+  transform:translateY(-3px);
+}
+.year-tab[aria-selected="true"] .opacity-70{ opacity:.75 !important; }
+
+/* Nodos del timeline */
+.timeline-node{
+  position:absolute; left:-4.15rem; top:1.4rem;
+  width:38px; height:38px; border-radius:14px; display:grid; place-items:center;
+  background:#0a0e1c; border:1px solid rgba(0,240,255,.45);
+  box-shadow:0 0 20px -4px rgba(0,240,255,.7);
+}
+@media (max-width:767px){ .timeline-node{ display:none; } }
+
+/* Acordeón de asignaturas */
+.subject-card{
+  background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.09);
+  border-radius:18px; overflow:hidden; transition:all .3s ease;
+}
+.subject-card:hover{ border-color:rgba(0,240,255,.3); background:rgba(255,255,255,.055); }
+.subject-head{ width:100%; display:flex; align-items:center; gap:14px; padding:16px 18px; text-align:left; }
+.subject-body{
+  max-height:0; overflow:hidden; transition:max-height .45s cubic-bezier(.2,.8,.25,1), opacity .35s ease;
+  opacity:0;
+}
+.subject-card.open .subject-body{ opacity:1; }
+.subject-card.open .chev{ transform:rotate(180deg); }
+.chev{ transition:transform .35s ease; }
+
+/* ── 11. Glow cards (campos laborales) ─────────────────────────── */
+.glow-card{
+  position:relative; display:block; overflow:hidden;
+  border-radius:24px; border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  transition:transform .4s cubic-bezier(.2,.8,.25,1), border-color .4s ease, box-shadow .4s ease;
+}
+.glow-card:hover{
+  transform:translateY(-8px);
+  border-color:rgba(0,240,255,.45);
+  box-shadow:0 0 0 1px rgba(0,240,255,.25), 0 24px 60px -26px rgba(0,240,255,.6);
+}
+.glow-spot{
+  position:absolute; width:220px; height:220px; border-radius:50%;
+  background:radial-gradient(circle, rgba(0,240,255,.28), transparent 68%);
+  left:var(--gx,50%); top:var(--gy,50%); transform:translate(-50%,-50%);
+  opacity:0; transition:opacity .35s ease; pointer-events:none; filter:blur(6px);
+}
+.glow-card:hover .glow-spot{ opacity:1; }
+
+/* ── 12. Tabs de juegos ────────────────────────────────────────── */
+.game-tab{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:10px 16px; border-radius:14px; font-size:13px; font-weight:700;
+  color:#94a3b8; background:transparent; transition:all .3s cubic-bezier(.2,.8,.25,1);
+  white-space:nowrap;
+}
+.game-tab:hover{ color:#fff; background:rgba(255,255,255,.07); }
+.game-tab[aria-selected="true"]{
+  color:#05070f; background:linear-gradient(135deg,var(--neon-violet),var(--neon-cyan));
+  box-shadow:0 0 24px -6px rgba(139,92,246,.85);
+}
+.game-panel{ animation:panelIn .5s cubic-bezier(.2,.8,.25,1); }
+@keyframes panelIn{ from{ opacity:0; transform:translateY(18px) scale(.985) } to{ opacity:1; transform:none } }
+
+/* ── 13. Cajas de estadística ──────────────────────────────────── */
+.stat-box{
+  display:flex; flex-direction:column; gap:4px;
+  background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10);
+  border-radius:14px; padding:10px 12px;
+}
+.stat-label{
+  font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:.16em;
+  color:#64748b; text-transform:uppercase;
+}
+.stat-value{
+  font-family:'Orbitron',sans-serif; font-weight:900; font-size:22px; color:#fff; line-height:1;
+}
+
+/* Botones táctiles genéricos */
+.t-btn{
+  display:grid; place-items:center; min-height:46px; padding:8px;
+  border-radius:13px; font-size:12px; font-weight:700;
+  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); color:#e2e8f0;
+  transition:all .15s ease; user-select:none;
+}
+.t-btn:hover{ background:rgba(0,240,255,.16); border-color:rgba(0,240,255,.5); color:#00f0ff; }
+.t-btn:active{ transform:scale(.93); background:rgba(0,240,255,.3); }
+
+/* ── 14. Cubo Rubik ────────────────────────────────────────────── */
+.face-btn{
+  padding:9px 6px; border-radius:11px; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700;
+  background:rgba(255,47,214,.10); border:1px solid rgba(255,47,214,.35); color:#ff8fe6;
+  transition:all .2s ease;
+}
+.face-btn:hover{ background:rgba(255,47,214,.28); color:#fff; box-shadow:0 0 18px -5px rgba(255,47,214,.9); }
+.face-btn:active{ transform:scale(.94); }
+
+/* ── 15. Ajedrez ───────────────────────────────────────────────── */
+.chess-board{
+  display:grid;
+  grid-template-columns:repeat(8, minmax(0,1fr));
+  width:min(86vw, 440px);
+  aspect-ratio:1/1;
+  border-radius:14px; overflow:hidden;
+  border:3px solid rgba(0,240,255,.35);
+  box-shadow:0 0 40px -14px rgba(0,240,255,.75), 0 18px 50px -22px #000;
+  user-select:none; touch-action:manipulation;
+}
+.square{
+  position:relative; display:grid; place-items:center;
+  font-size:clamp(20px, 6vw, 34px); line-height:1;
+  transition:background .18s ease;
+  cursor:pointer;
+}
+.square.light{ background:#0e2a3a; }
+.square.dark { background:#071722; }
+.square:hover{ filter:brightness(1.35); }
+.square.selected{ background:rgba(0,240,255,.55) !important; box-shadow:inset 0 0 0 3px #00f0ff; }
+.square.legal::after{
+  content:""; position:absolute; width:26%; height:26%; border-radius:50%;
+  background:rgba(166,255,0,.75); box-shadow:0 0 12px rgba(166,255,0,.9);
+}
+.square.legal.capture::after{
+  width:78%; height:78%; background:transparent; border:3px solid rgba(255,47,214,.85);
+  box-shadow:0 0 16px rgba(255,47,214,.75);
+}
+.square.last{ background:rgba(255,176,32,.32) !important; }
+.square.check{ background:rgba(255,60,60,.55) !important; }
+.square .piece{ position:relative; z-index:2; filter:drop-shadow(0 3px 5px rgba(0,0,0,.75)); }
+.piece.w{ color:#f8fafc; text-shadow:0 0 6px rgba(255,255,255,.55); }
+.piece.b{ color:#0b1220; text-shadow:0 0 4px rgba(0,240,255,.55); -webkit-text-stroke:1px rgba(0,240,255,.45); }
+.coord{
+  position:absolute; font-family:'JetBrains Mono',monospace; font-size:8px; opacity:.5;
+}
+.coord.file{ right:3px; bottom:1px; }
+.coord.rank{ left:3px; top:1px; }
+
+/* ── 16. QR ────────────────────────────────────────────────────── */
+#qr-code img, #qr-code canvas{ width:100% !important; height:100% !important; image-rendering:pixelated; }
+#qr-code::after{ content:""; }
+
+/* ── 17. Footer ────────────────────────────────────────────────── */
+.social-btn{
+  display:grid; place-items:center; width:38px; height:38px; border-radius:11px;
+  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.10); color:#94a3b8;
+  transition:all .3s cubic-bezier(.2,.8,.25,1);
+}
+.social-btn:hover{
+  color:#00f0ff; border-color:rgba(0,240,255,.5); transform:translateY(-4px);
+  box-shadow:0 0 22px -6px rgba(0,240,255,.9);
+}
+
+/* ── 18. Utilidades animadas ───────────────────────────────────── */
+@keyframes float{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-16px) } }
+@keyframes pulseGlow{ 0%,100%{ opacity:.55 } 50%{ opacity:1 } }
+@keyframes marquee{ 0%{ transform:translateX(0) } 100%{ transform:translateX(-50%) } }
+@keyframes spin{ to{ transform:rotate(360deg) } }
+
+/* Ajustes de accesibilidad */
+:focus-visible{ outline:2px solid var(--neon-cyan); outline-offset:3px; border-radius:6px; }
+
+/* ── 19. Responsive fino ───────────────────────────────────────── */
+@media (max-width:640px){
+  .glass-card{ backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+  #navbar nav{ padding-left:12px; padding-right:12px; }
+  .stat-value{ font-size:18px; }
+}
+@media (max-width:380px){
+  .year-tab{ min-width:78px; padding:10px 14px; }
+}
