@@ -912,11 +912,11 @@
             <div class="mt-6 grid sm:grid-cols-2 gap-3">
               <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
                 <div class="grid place-items-center w-9 h-9 rounded-lg bg-neon-cyan/15 text-neon-cyan"><i data-lucide="calendar-days" class="w-4 h-4"></i></div>
-                <div><p class="font-mono text-[10px] text-slate-500">FECHA</p><p class="text-sm font-semibold text-white">Viernes 14 de noviembre</p></div>
+                <div><p class="font-mono text-[10px] text-slate-500">FECHA</p><p class="text-sm font-semibold text-white">Martes 27 de octubre</p></div>
               </div>
               <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
                 <div class="grid place-items-center w-9 h-9 rounded-lg bg-neon-magenta/15 text-neon-magenta"><i data-lucide="clock" class="w-4 h-4"></i></div>
-                <div><p class="font-mono text-[10px] text-slate-500">HORA</p><p class="text-sm font-semibold text-white">16:00 – 18:00 h</p></div>
+                <div><p class="font-mono text-[10px] text-slate-500">HORA</p><p class="text-sm font-semibold text-white">16:30 h</p></div>
               </div>
               <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
                 <div class="grid place-items-center w-9 h-9 rounded-lg bg-neon-lime/15 text-neon-lime"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
@@ -932,9 +932,6 @@
               <a href="#" class="inline-flex items-center gap-2 rounded-xl px-5 py-3 font-bold text-sm bg-gradient-to-r from-neon-cyan to-neon-violet text-void shadow-neon-cyan hover:-translate-y-0.5 transition">
                 <i data-lucide="ticket" class="w-4 h-4"></i> Reservar mi cupo
               </a>
-              <a href="https://wa.me/591" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-xl px-5 py-3 font-bold text-sm border border-white/15 bg-white/5 hover:bg-white/10 transition">
-                <i data-lucide="message-circle" class="w-4 h-4 text-neon-lime"></i> Consultar por WhatsApp
-              </a>
             </div>
           </div>
         </div>
@@ -949,17 +946,17 @@
             <div class="flex items-center gap-2 font-mono text-[11px] tracking-widest text-neon-magenta">
               <i data-lucide="scan-line" class="w-4 h-4"></i> GENERADOR / VISUALIZADOR QR
             </div>
-            <h3 class="mt-4 font-display text-2xl font-black text-white">Llévate la Malla Curricular</h3>
+            <h3 class="mt-4 font-display text-2xl font-black text-white">Llévate esta Página Contigo</h3>
             <p class="mt-2 text-slate-400 text-sm leading-relaxed">
-              Apunta la cámara de tu celular al código para descargar el tríptico oficial de la carrera
-              (plan de estudios PDF, perfil de egreso y datos de admisión).
+              Apunta la cámara de tu celular al código para volver a esta misma página en cualquier momento:
+              plan de estudios, juegos, eventos y admisión, todo en tu bolsillo.
             </p>
 
             <!-- Controles del QR -->
             <div class="mt-5 rounded-2xl border border-white/10 bg-white/5 p-4">
               <label for="qr-input" class="stat-label">PERSONALIZA EL CONTENIDO DEL QR</label>
               <div class="mt-2 flex gap-2">
-                <input id="qr-input" type="text" value="https://www.uap.edu.bo/ing-sistemas"
+                <input id="qr-input" type="text" value="https://fidelganime-dotcom.github.io/landing-ing-sistemas-uap/"
                        class="flex-1 rounded-xl border border-white/10 bg-void/70 px-3 py-2.5 text-[13px] font-mono text-neon-cyan
                               focus:border-neon-magenta/60 focus:ring-0 placeholder:text-slate-600" />
                 <button id="qr-gen" class="rounded-xl px-4 py-2.5 text-[13px] font-bold bg-neon-magenta text-white hover:shadow-neon-magenta transition">
@@ -967,16 +964,16 @@
                 </button>
               </div>
               <div class="mt-3 flex flex-wrap gap-1.5">
-                <button class="qr-preset chip" data-url="https://www.uap.edu.bo/ing-sistemas">Malla curricular</button>
-                <button class="qr-preset chip" data-url="https://www.uap.edu.bo/admision">Admisión 2026</button>
-                <button class="qr-preset chip" data-url="https://www.uap.edu.bo/contacto">Contacto UAP</button>
-                <button class="qr-preset chip" data-url="https://www.uap.edu.bo/laboratorios">Laboratorios</button>
+                <button class="qr-preset chip" data-url="https://fidelganime-dotcom.github.io/landing-ing-sistemas-uap/">Esta página</button>
+                <button class="qr-preset chip" data-url="https://fidelganime-dotcom.github.io/landing-ing-sistemas-uap/#plan">Plan de estudios</button>
+                <button class="qr-preset chip" data-url="https://fidelganime-dotcom.github.io/landing-ing-sistemas-uap/#eventos">Charla orientativa</button>
+                <button class="qr-preset chip" data-url="https://fidelganime-dotcom.github.io/landing-ing-sistemas-uap/#juegos">Zona gaming</button>
               </div>
             </div>
 
             <!-- Visor QR -->
             <div class="mt-5 flex flex-col sm:flex-row items-center gap-5">
-              <div id="qr-box" class="relative grid place-items-center w-48 h-48 rounded-2xl bg-white p-3 shrink-0 shadow-neon-magenta">
+              <div id="qr-box" class="relative grid place-items-center w-56 h-56 rounded-2xl bg-white p-3 shrink-0 shadow-neon-magenta">
                 <div id="qr-code" class="grid place-items-center w-full h-full"></div>
                 <span class="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-neon-magenta rounded-tl-md"></span>
                 <span class="absolute -top-2 -right-2 w-4 h-4 border-t-2 border-r-2 border-neon-magenta rounded-tr-md"></span>
@@ -1058,7 +1055,7 @@
         <h4 class="font-display text-xs font-bold tracking-[.25em] text-white">RECURSOS</h4>
         <ul class="mt-4 space-y-2.5 text-sm text-slate-500">
           <li><a href="#eventos" class="hover:text-neon-magenta transition">Charla Orientativa</a></li>
-          <li><a href="#eventos" class="hover:text-neon-magenta transition">Descargar Tríptico (QR)</a></li>
+          <li><a href="#eventos" class="hover:text-neon-magenta transition">Generador de QR</a></li>
           <li><a href="#"        class="hover:text-neon-magenta transition">Admisión 2026</a></li>
           <li><a href="#"        class="hover:text-neon-magenta transition">Bolsa de Trabajo</a></li>
           <li><a href="#"        class="hover:text-neon-magenta transition">Investigación</a></li>
@@ -1070,11 +1067,9 @@
         <h4 class="font-display text-xs font-bold tracking-[.25em] text-white">CONTACTO</h4>
         <ul class="mt-4 space-y-3 text-sm text-slate-500">
           <li class="flex gap-3"><i data-lucide="map-pin" class="w-4 h-4 text-neon-cyan shrink-0 mt-0.5"></i>
-            <span>Cobija, Beni — Bolivia<br>Universidad Amazónica de Pando</span></li>
+            <span>Cobija, Pando, Bolivia · UAP</span></li>
           <li class="flex gap-3"><i data-lucide="mail" class="w-4 h-4 text-neon-cyan shrink-0 mt-0.5"></i>
             <a href="mailto:sistemas@uap.edu.bo" class="hover:text-white transition break-all">sistemas@uap.edu.bo</a></li>
-          <li class="flex gap-3"><i data-lucide="phone" class="w-4 h-4 text-neon-cyan shrink-0 mt-0.5"></i>
-            <span>+591 (3) 000 0000</span></li>
         </ul>
       </div>
     </div>

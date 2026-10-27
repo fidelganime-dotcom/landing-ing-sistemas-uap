@@ -328,6 +328,9 @@
   const qrMsg    = $('#qr-msg');
   let qrCanvasOrImg = null;
 
+  // URL de la propia página publicada: el QR siempre redirige aquí
+  const QR_DEFAULT = 'https://fidelganime-dotcom.github.io/landing-ing-sistemas-uap/';
+
   function makeQR(text) {
     if (!qrBox) return;
     qrBox.innerHTML = '';
@@ -344,7 +347,7 @@
       try {
         // eslint-disable-next-line no-new
         new window.QRCode(qrBox, {
-          text: text, width: 176, height: 176,
+          text: text, width: 200, height: 200,
           colorDark: '#05070f', colorLight: '#ffffff',
           correctLevel: window.QRCode.CorrectLevel.M
         });
@@ -357,12 +360,12 @@
       } catch (e) { /* cae al fallback */ }
     }
     // Fallback: imagen remota
-    ok(`<img src="https://api.qrserver.com/v1/create-qr-code/?size=176x176&margin=0&data=${encodeURIComponent(text)}" alt="Código QR" width="176" height="176" />`);
+    ok(`<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=0&data=${encodeURIComponent(text)}" alt="Código QR" width="200" height="200" />`);
   }
 
   if (qrInput) {
-    $('#qr-gen')?.addEventListener('click', () => makeQR(qrInput.value.trim() || 'https://www.uap.edu.bo'));
-    qrInput.addEventListener('keydown', e => { if (e.key === 'Enter') makeQR(qrInput.value.trim()); });
+    $('#qr-gen')?.addEventListener('click', () => makeQR(qrInput.value.trim() || QR_DEFAULT));
+    qrInput.addEventListener('keydown', e => { if (e.key === 'Enter') makeQR(qrInput.value.trim() || QR_DEFAULT); });
     $$('.qr-preset').forEach(b => b.addEventListener('click', () => {
       qrInput.value = b.dataset.url; makeQR(b.dataset.url);
     }));
