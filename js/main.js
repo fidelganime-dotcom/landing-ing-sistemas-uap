@@ -389,6 +389,28 @@
   /* ═════════════ Misceláneos ═════════════ */
   const y = $('#year'); if (y) y.textContent = new Date().getFullYear();
 
+  /* — Tema claro / oscuro —
+     El <head> ya aplicó la clase .light antes de pintar (sin "flash");
+     aquí solo sincronizamos iconos y guardamos la elección del usuario. */
+  const docEl = document.documentElement;
+  const themeBtn = $('#theme-toggle');
+  const metaTheme = $('#meta-theme-color');
+
+  function applyTheme(t, persist) {
+    const light = (t === 'light');
+    docEl.classList.toggle('light', light);
+    if (persist) { try { localStorage.setItem('theme', t); } catch (e) { /* sin storage */ } }
+    if (metaTheme) metaTheme.setAttribute('content', light ? '#f4f7ff' : '#05070f');
+    $('#theme-toggle .icon-sun')?.classList.toggle('hidden', !light);
+    $('#theme-toggle .icon-moon')?.classList.toggle('hidden', light);
+    themeBtn?.setAttribute('aria-label', light ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro');
+  }
+  // Iconos coherentes con el tema ya aplicado por el script del <head>
+  applyTheme(docEl.classList.contains('light') ? 'light' : 'dark', false);
+  themeBtn?.addEventListener('click', () => {
+    applyTheme(docEl.classList.contains('light') ? 'dark' : 'light', true);
+  });
+
   // Inicializar iconos Lucide una vez listo el DOM
   function initIcons() { if (window.lucide) window.lucide.createIcons(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initIcons);

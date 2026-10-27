@@ -49,12 +49,17 @@
   const velocities = new Float32Array(COUNT * 3);
   const colors = new Float32Array(COUNT * 3);
 
-  const palette = [
-    new THREE.Color(0x00f0ff),
-    new THREE.Color(0xff2fd6),
-    new THREE.Color(0xa6ff00),
-    new THREE.Color(0x8b5cf6)
-  ];
+  // ── Paletas por tema: neón puro (oscuro) / acentos oscurecidos (claro,
+  //    legibles sobre blanco). La niebla y las estrellas también cambian. ──
+  const THEME = {
+    dark:  { fog:0x05070f, star:0x2a4a6a, add:true,
+             pal:[0x00f0ff,0xff2fd6,0xa6ff00,0x8b5cf6],
+             line1:[0,.94,1], line2:[1,.19,.84] },
+    light: { fog:0xf4f7ff, star:0x64748b, add:false,
+             pal:[0x0e7495,0xdb2777,0x4d7c0f,0x7c3aed],
+             line1:[.055,.455,.584], line2:[.859,.153,.467] }
+  };
+  const palette = THEME.dark.pal.map(h => new THREE.Color(h));
 
   for (let i = 0; i < COUNT; i++) {
     positions[i * 3 + 0] = (Math.random() - 0.5) * RANGE * 2;
@@ -111,9 +116,30 @@
     starPos[i * 3 + 2] = -20 - Math.random() * 40;
   }
   starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({
+  const starMat = new THREE.PointsMaterial({
     size: 0.16, color: 0x2a4a6a, transparent: true, opacity: 0.75, depthWrite: false
-  })));
+  });
+  scene.add(new THREE.Points(starGeo, starMat));
+
+  // ── Tema claro/oscuro: se aplica al cargar y en caliente (toggle) ──
+  let cur = THEME.dark;
+  let isLight = document.documentElement.classList.contains('light');
+  function applyParticleTheme(light) {
+    isLight = light;
+    cur = light ? THEME.light : THEME.dark;
+    scene.fog.color.setHex(cur.fog);
+    starMat.color.setHex(cur.star);
+    // Aditivo luce bien sobre fondo oscuro; sobre fondo claro se usa
+    // mezcla normal para que los puntos conserven su color exacto.
+    pointMat.blending = lineMat.blending = light ? THREE.NormalBlending : THREE.AdditiveBlending;
+    for (let i = 0; i < COUNT; i++) {
+      palette[i % palette.length].setHex(cur.pal[i % cur.pal.length]);
+      const c = palette[i % palette.length];
+      colors[i * 3] = c.r; colors[i * 3 + 1] = c.g; colors[i * 3 + 2] = c.b;
+    }
+    pointGeo.getAttribute('color').needsUpdate = true;
+  }
+  applyParticleTheme(isLight);
 
   // ── Interacción: puntero ──
   const pointer = { x: 0, y: 0, tx: 0, ty: 0, active: false };
@@ -142,6 +168,10 @@
 
   function animate() {
     raf = requestAnimationFrame(animate);
+
+    // Cambio de tema en caliente (barra deToggle del navbar)
+    const lightNow = document.documentElement.classList.contains('light');
+    if (lightNow !== isLight) applyParticleTheme(lightNow);
 
     // Interpolar puntero
     pointer.x += (pointer.tx - pointer.x) * 0.05;
@@ -180,8 +210,8 @@
         linePos[o + 3] = p[j * 3];       linePos[o + 4] = p[j * 3 + 1];   linePos[o + 5] = p[j * 3 + 2];
 
         // color cian → magenta según cercanía (t = intensidad)
-        lineCol[o]     = t * 0.00;  lineCol[o + 1] = t * 0.94;  lineCol[o + 2] = t * 1.00;
-        lineCol[o + 3] = t * 1.00;  lineCol[o + 4] = t * 0.19;  lineCol[o + 5] = t * 0.84;
+        lineCol[o]     = t * cur.line1[0];  lineCol[o + 1] = t * cur.line1[1];  lineCol[o + 2] = t * cur.line1[2];
+        lineCol[o + 3] = t * cur.line2[0];  lineCol[o + 4] = t * cur.line2[1];  lineCol[o + 5] = t * cur.line2[2];
 
         n++;
       }
@@ -234,6 +264,13 @@
     if (!ctx) return;
     let w, h, pts, raf;
     const N = window.innerWidth < 768 ? 45 : 90;
+    // Paletas por tema (mismas que la ruta Three.js)
+    const PAL = {
+      dark:  ['#00f0ff', '#ff2fd6', '#a6ff00', '#8b5cf6'],
+      light: ['#0e7495', '#db2777', '#4d7c0f', '#7c3aed']
+    };
+    let lightNow = document.documentElement.classList.contains('light');
+    let pal = lightNow ? PAL.light : PAL.dark;
 
     function resize() {
       w = canvas.width = window.innerWidth;
@@ -243,11 +280,17 @@
       pts = Array.from({ length: N }, () => ({
         x: Math.random() * w, y: Math.random() * h,
         vx: (Math.random() - .5) * .45, vy: (Math.random() - .5) * .45,
-        c: ['#00f0ff', '#ff2fd6', '#a6ff00', '#8b5cf6'][Math.floor(Math.random() * 4)]
+        c: pal[Math.floor(Math.random() * 4)]
       }));
     }
     function loop() {
       raf = requestAnimationFrame(loop);
+      // Cambio de tema en caliente
+      const L = document.documentElement.classList.contains('light');
+      if (L !== lightNow) {
+        lightNow = L; pal = L ? PAL.light : PAL.dark;
+        pts.forEach((p, i) => { p.c = pal[i % 4]; });
+      }
       ctx.clearRect(0, 0, w, h);
       for (const p of pts) {
         p.x += p.vx; p.y += p.vy;
@@ -262,7 +305,9 @@
           const d = Math.hypot(dx, dy);
           if (d > 130) continue;
           ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y);
-          ctx.strokeStyle = `rgba(0,240,255,${(1 - d / 130) * .35})`;
+          ctx.strokeStyle = lightNow
+            ? `rgba(14,116,149,${(1 - d / 130) * .45})`
+            : `rgba(0,240,255,${(1 - d / 130) * .35})`;
           ctx.lineWidth = .6; ctx.stroke();
         }
       }

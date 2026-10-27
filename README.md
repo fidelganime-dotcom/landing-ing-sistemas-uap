@@ -6,6 +6,8 @@ tecnológica.
 
 > Diseño dark tech / cyberpunk con glassmorphism, neones, animaciones al scroll y una
 > **Zona Gaming** con tres juegos totalmente jugables escritos desde cero.
+> Incluye **modo claro/oscuro** alegre y legible (toggle en la navbar, se recuerda la
+> preferencia) y los **logos institucionales** de la UAP y la carrera.
 
 ---
 
@@ -21,6 +23,16 @@ tecnológica.
 | 6 | **Zona Gaming** | Tabs con 3 juegos jugables: 🧩 Tetris Tech, 🎲 Cubo Rubik 3D, ♟️ Ajedrez Virtual + nota motivacional |
 | 7 | **Eventos & QR** | Tarjeta de la *"Charla Orientativa en LAB 3"* + **generador/visualizador de QR** con presets, descarga PNG y copia de enlace |
 | 8 | **Footer** | Enlaces rápidos, redes sociales, luces de fondo sutiles y copyright dinámico |
+
+### 🎨 Temas (claro / oscuro)
+
+- Toggle con iconos ☀/🌙 en la navbar; se aplica **antes de pintar** (sin parpadeo) y la
+  preferencia se guarda en `localStorage` (si no hay elección, respeta el sistema).
+- **Modo oscuro:** neón sobre fondo profundo (por defecto).
+- **Modo claro:** colores vivos y alegres sobre fondo claro, con acentos oscurecidos que
+  cumplen contraste **WCAG AA** (≥ 4.5:1) — títulos, textos, bordes y superficies se
+  adaptan automáticamente vía variables CSS; los logos son legibles en ambos temas.
+- Logos en la **navbar**, el **héroe** (orbitando el orbe), el **footer** y como favicon.
 
 ---
 
@@ -75,13 +87,14 @@ Luego abre **http://localhost:8765/** en el navegador.
 
 ```
 Pagina informativa/
-├── index.html          # Página completa (8 secciones)
+├── index.html          # Página completa (8 secciones) + config Tailwind + tema
+├── logo/               # Logos institucionales (uap.jpg, sis.png)
 ├── css/
-│   └── styles.css      # Estilos propios: glassmorphism, neones, tilt, glow, responsive
+│   └── styles.css      # Estilos propios + variables de tema (§1) y modo claro (§20)
 └── js/
-    ├── particles.js    # Red de nodos 3D (Three.js) + fallback Canvas 2D
+    ├── particles.js    # Red de nodos 3D (Three.js) + fallback Canvas 2D (adapta tema)
     ├── plan-data.js    # Datos del plan de estudios (5 años × 5 asignaturas)
-    ├── main.js         # Navbar, scroll, typewriter, tilt, tabs, acordeón, QR
+    ├── main.js         # Navbar, scroll, typewriter, tilt, tabs, QR, toggle de tema
     ├── tetris.js       # Motor de Tetris (SRS, scoring, niveles, táctil)
     ├── rubik.js        # Cubo Rubik 3D (rotación de capas, cámara orbital)
     └── chess.js        # Motor de ajedrez (validación, jaque/mate, al paso, enroque)
@@ -99,7 +112,7 @@ desplegable. Se respeta `prefers-reduced-motion` y el contenido es legible sin J
 
 ## ✅ Calidad
 
-- **0 errores de consola**
+- **0 errores de consola** (verificado en modo oscuro **y** claro)
 - **Lighthouse:** Best Practices **100** · Accessibilidad **90** · SEO **80**
 - Código modular, comentado y con `node --check` limpio en los 6 módulos JS
 

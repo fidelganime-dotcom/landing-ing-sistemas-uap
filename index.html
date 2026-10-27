@@ -5,7 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Ingeniería de Sistemas | Universidad Amazónica de Pando — Diseña el Futuro Digital</title>
 <meta name="description" content="Carrera de Ingeniería de Sistemas de la Universidad Amazónica de Pando (UAP). Formando arquitectos de software, especialistas en IA, IoT y ciberseguridad. Plan de estudios de 5 años, laboratorios de última generación y salida laboral 100%." />
-<meta name="theme-color" content="#05070f" />
+<meta name="theme-color" id="meta-theme-color" content="#05070f" />
+<link rel="icon" type="image/png" href="logo/sis.png" />
+<meta property="og:image" content="logo/sis.png" />
 <meta property="og:title" content="DISEÑA EL FUTURO DIGITAL — Ing. de Sistemas UAP" />
 <meta property="og:description" content="5 años · Labs de última generación · 100% salida laboral. Únete a la carrera de Ingeniería de Sistemas de la Universidad Amazónica de Pando." />
 <meta property="og:type" content="website" />
@@ -24,14 +26,16 @@
     theme: {
       extend: {
         colors: {
-          void:    '#05070f',
-          panel:   '#0a0e1c',
+          /* Vinculadas a variables CSS: permiten cambiar la paleta completa
+             (modo claro/oscuro) en tiempo real desde css/styles.css */
+          void:    'rgb(var(--c-void) / <alpha-value>)',
+          panel:   'rgb(var(--c-panel) / <alpha-value>)',
           neon: {
-            cyan:    '#00f0ff',
-            magenta: '#ff2fd6',
-            lime:    '#a6ff00',
-            violet:  '#8b5cf6',
-            amber:   '#ffb020'
+            cyan:    'rgb(var(--c-cyan) / <alpha-value>)',
+            magenta: 'rgb(var(--c-magenta) / <alpha-value>)',
+            lime:    'rgb(var(--c-lime) / <alpha-value>)',
+            violet:  'rgb(var(--c-violet) / <alpha-value>)',
+            amber:   'rgb(var(--c-amber) / <alpha-value>)'
           }
         },
         fontFamily: {
@@ -66,6 +70,18 @@
 <!-- Marca que JS está activo: permite ocultar inicialmente los elementos
      .reveal solo cuando hay JS (si no, todo el contenido queda visible). -->
 <script>document.documentElement.classList.add('js');</script>
+
+<!-- Aplica el tema guardado ANTES de pintar: evita el "flash" de tema
+     incorrecto. Si no hay elección previa, respeta el sistema. -->
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      if (t === 'light') document.documentElement.classList.add('light');
+    } catch (e) { /* sin localStorage: queda en modo oscuro */ }
+  })();
+</script>
 
 <!-- ═══════════════ ICONOGRAFÍA ═══════════════ -->
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
@@ -111,12 +127,14 @@
   <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 mt-3 sm:mt-4">
     <div class="glass-nav rounded-2xl border border-white/10 px-4 sm:px-5 py-3 flex items-center justify-between gap-4">
 
-      <!-- Logo de la carrera -->
+      <!-- Logo de la carrera: escudo UAP + isologo de la carrera -->
       <a href="#hero" class="group flex items-center gap-3 shrink-0">
-        <span class="relative grid place-items-center w-10 h-10 rounded-xl bg-gradient-to-br from-neon-cyan/25 to-neon-magenta/25 border border-neon-cyan/40 shadow-neon-cyan transition-transform duration-300 group-hover:rotate-12">
-          <i data-lucide="binary" class="w-5 h-5 text-neon-cyan"></i>
-          <span class="absolute -inset-1 rounded-xl bg-neon-cyan/20 blur-md -z-10 opacity-0 group-hover:opacity-100 transition"></span>
-        </span>
+        <img src="logo/uap.jpg" alt="Universidad Amazónica de Pando"
+             class="logo-img w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border border-white/20
+                    transition-transform duration-300 group-hover:rotate-12" />
+        <img src="logo/sis.png" alt="Ingeniería de Sistemas UAP"
+             class="logo-img hidden xs:block w-10 h-10 sm:w-11 sm:h-11 rounded-full object-cover border border-white/20
+                    transition-transform duration-300 group-hover:-rotate-6" />
         <span class="leading-none">
           <span class="block font-display text-[13px] sm:text-sm font-black tracking-wider text-white">ING. SISTEMAS</span>
           <span class="block font-mono text-[9px] sm:text-[10px] text-neon-cyan/70 tracking-[.25em] mt-1">UNIV. AMAZÓNICA DE PANDO</span>
@@ -133,8 +151,16 @@
         <li><a href="#eventos"     class="nav-link px-3 py-2 rounded-lg" data-section="eventos">Eventos</a></li>
       </ul>
 
-      <!-- CTA con Glow -->
+      <!-- CTA con Glow + toggle de tema -->
       <div class="flex items-center gap-2">
+        <!-- Toggle modo claro / oscuro -->
+        <button id="theme-toggle" aria-label="Cambiar modo claro u oscuro" title="Cambiar tema"
+                class="theme-toggle grid place-items-center w-10 h-10 rounded-xl border border-white/10 bg-white/5
+                       active:scale-90 transition hover:shadow-neon-cyan">
+          <i data-lucide="sun" class="icon-sun w-5 h-5 text-neon-amber hidden"></i>
+          <i data-lucide="moon" class="icon-moon w-5 h-5 text-neon-cyan"></i>
+        </button>
+
         <a href="#plan" class="hidden sm:inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold tracking-wide
                                bg-gradient-to-r from-neon-cyan to-neon-violet text-void shadow-neon-cyan
                                hover:shadow-[0_0_34px_-4px_rgba(0,240,255,.85)] transition-all duration-300 hover:-translate-y-0.5">
@@ -251,14 +277,20 @@
     <!-- Columna de tarjetas flotantes + orbe 3D -->
     <div class="lg:col-span-5 relative reveal">
       <div class="relative mx-auto max-w-md">
-        <!-- Orbe / holograma -->
+        <!-- Orbe / holograma con los logos institucionales -->
         <div class="relative aspect-square grid place-items-center">
           <div class="absolute inset-6 rounded-full bg-gradient-to-br from-neon-cyan/25 via-neon-violet/10 to-neon-magenta/25 blur-2xl animate-pulse-glow"></div>
           <div class="absolute inset-10 rounded-full border border-neon-cyan/25 animate-spin-slow"></div>
           <div class="absolute inset-16 rounded-full border border-dashed border-neon-magenta/30 animate-spin" style="animation-duration:16s;animation-direction:reverse"></div>
-          <div class="relative grid place-items-center w-32 h-32 rounded-full bg-void/70 border border-neon-cyan/40 shadow-neon-cyan backdrop-blur-xl">
-            <i data-lucide="circuit-board" class="w-14 h-14 text-neon-cyan"></i>
-            <span class="absolute inset-0 rounded-full bg-neon-cyan/10 animate-ping"></span>
+
+          <!-- Escudos UAP + Ing. de Sistemas flotando sobre el anillo -->
+          <div class="relative flex items-center gap-4 sm:gap-5">
+            <img src="logo/uap.jpg" alt="Escudo de la Universidad Amazónica de Pando"
+                 class="logo-img w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-2 border-neon-cyan/40
+                        shadow-neon-cyan backdrop-blur-xl animate-float" />
+            <img src="logo/sis.png" alt="Escudo de la Facultad de Ingeniería y Tecnología — Ingeniería de Sistemas"
+                 class="logo-img w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover border-2 border-neon-magenta/40
+                        shadow-neon-magenta backdrop-blur-xl animate-float" style="animation-delay:-3s" />
           </div>
         </div>
 
@@ -989,9 +1021,8 @@
       <!-- Marca -->
       <div class="lg:col-span-1">
         <div class="flex items-center gap-3">
-          <span class="grid place-items-center w-11 h-11 rounded-xl bg-gradient-to-br from-neon-cyan/25 to-neon-magenta/25 border border-neon-cyan/40 shadow-neon-cyan">
-            <i data-lucide="binary" class="w-5 h-5 text-neon-cyan"></i>
-          </span>
+          <img src="logo/uap.jpg" alt="Universidad Amazónica de Pando" class="logo-img w-11 h-11 rounded-full object-cover border border-white/20" />
+          <img src="logo/sis.png" alt="Ingeniería de Sistemas" class="logo-img w-11 h-11 rounded-full object-cover border border-white/20" />
           <span class="leading-tight">
             <span class="block font-display text-sm font-black text-white tracking-wide">ING. DE SISTEMAS</span>
             <span class="block font-mono text-[10px] text-neon-cyan/70 tracking-[.2em]">UAP</span>

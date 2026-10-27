@@ -6,12 +6,89 @@
 
 /* ── 1. Variables globales ─────────────────────────────────────── */
 :root{
+  /* ── MODO OSCURO (por defecto): neón sobre fondo profundo ── */
   --neon-cyan:#00f0ff;
   --neon-magenta:#ff2fd6;
   --neon-lime:#a6ff00;
   --neon-violet:#8b5cf6;
   --neon-amber:#ffb020;
   --void:#05070f;
+
+  /* Paleta consumida por Tailwind (ver tailwind.config en index.html).
+     Formato: TRIPLETAS R G B sin comas, para usarlas como
+     rgb(var(--c-cyan) / <alpha-value>). */
+  --c-void:5 7 15;
+  --c-panel:10 14 28;
+  --c-cyan:0 240 255;
+  --c-magenta:255 47 214;
+  --c-lime:166 255 0;
+  --c-violet:139 92 246;
+  --c-amber:255 176 32;
+
+  /* Superficies y textos del tema */
+  --bg-body:#05070f;
+  --bg-glass:rgba(255,255,255,.055);
+  --bg-glass-2:rgba(255,255,255,.04);
+  --border-soft:rgba(255,255,255,.10);
+  --border-softer:rgba(255,255,255,.05);
+  --text-strong:#ffffff;
+  --text-base:#cbd5e1;
+  --text-muted:#94a3b8;
+  --text-faint:#64748b;
+  --nav-bg:rgba(10,14,28,.55);
+  --nav-bg-scrolled:rgba(6,9,18,.82);
+
+  /* Tokens de componentes (redefinidos en html.light → §20) */
+  --surf-a:rgba(255,255,255,.055);      /* superficie clara (glass, chips) */
+  --surf-b:rgba(255,255,255,.018);      /* superficie tenue (fin del degradado) */
+  --surf-flat:rgba(255,255,255,.045);   /* superficie plana (tabs, stat-box) */
+  --shadow-1:rgba(0,0,0,.85);           /* sombra de tarjetas / navbar */
+  --node-bg:#0a0e1c;                    /* nodo del timeline */
+  --scan-line:rgba(255,255,255,.018);   /* líneas de escaneo */
+  --grid-line:rgba(0,240,255,.045);     /* rejilla de fondo */
+  --track-bg:#05070f;                   /* pista del scrollbar */
+  --face-fg:#ff8fe6;                    /* texto de botones de caras (Rubik) */
+}
+
+/* ── MODO CLARO: colores vivos y alegres, texto oscuro legible ── */
+html.light{
+  --neon-cyan:#0e7495;      /* cian profundo → AA (5.3:1) como texto y con texto claro */
+  --neon-magenta:#db2777;   /* rosa vivo */
+  --neon-lime:#4d7c0f;      /* verde lima oscurecido (legible) */
+  --neon-violet:#7c3aed;    /* violeta vivo */
+  --neon-amber:#b45309;     /* ámbar quemado (legible) */
+  --void:#f4f7ff;
+
+  --c-void:244 247 255;
+  --c-panel:255 255 255;
+  --c-cyan:14 116 149;
+  --c-magenta:219 39 119;
+  --c-lime:77 124 15;
+  --c-violet:124 58 237;
+  --c-amber:180 83 9;
+
+  --bg-body:#f4f7ff;
+  --bg-glass:rgba(255,255,255,.85);
+  --bg-glass-2:rgba(255,255,255,.70);
+  --border-soft:rgba(15,23,42,.12);
+  --border-softer:rgba(15,23,42,.07);
+  --text-strong:#0f172a;
+  --text-base:#1e293b;
+  --text-muted:#475569;
+  --text-faint:#64748b;
+  --nav-bg:rgba(255,255,255,.78);
+  --nav-bg-scrolled:rgba(255,255,255,.92);
+
+  /* Tokens de componentes en modo claro */
+  --surf-a:rgba(255,255,255,.92);
+  --surf-b:rgba(255,255,255,.55);
+  --surf-flat:rgba(255,255,255,.78);
+  --shadow-1:rgba(15,23,42,.14);
+  --node-bg:#ffffff;
+  --scan-line:rgba(15,23,42,.035);
+  --grid-line:rgba(14,116,149,.13);
+  --track-bg:#e2e8f0;
+  --face-fg:#be185d;
 }
 
 *{ -webkit-tap-highlight-color: transparent; }
@@ -28,21 +105,21 @@ body{
 
 /* Scrollbar temática */
 ::-webkit-scrollbar{ width:9px; height:9px; }
-::-webkit-scrollbar-track{ background:#05070f; }
+::-webkit-scrollbar-track{ background:var(--track-bg); }
 ::-webkit-scrollbar-thumb{ background:linear-gradient(180deg,var(--neon-cyan),var(--neon-violet)); border-radius:99px; }
 ::-webkit-scrollbar-thumb:hover{ background:linear-gradient(180deg,var(--neon-magenta),var(--neon-violet)); }
 
 /* ── 2. Fondos decorativos globales ────────────────────────────── */
 .bg-grid{
   background-image:
-    linear-gradient(rgba(0,240,255,.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,240,255,.045) 1px, transparent 1px);
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
   background-size:56px 56px;
   mask-image:radial-gradient(ellipse at 50% 0%, #000 30%, transparent 78%);
   -webkit-mask-image:radial-gradient(ellipse at 50% 0%, #000 30%, transparent 78%);
 }
 .scanlines{
-  background:repeating-linear-gradient(0deg, rgba(255,255,255,.018) 0 1px, transparent 1px 3px);
+  background:repeating-linear-gradient(0deg, var(--scan-line) 0 1px, transparent 1px 3px);
   opacity:.5;
 }
 
@@ -51,23 +128,23 @@ body{
 
 /* ── 4. Navbar ─────────────────────────────────────────────────── */
 .glass-nav{
-  background:rgba(10,14,28,.55);
+  background:var(--nav-bg);
   backdrop-filter:blur(18px) saturate(140%);
   -webkit-backdrop-filter:blur(18px) saturate(140%);
-  box-shadow:0 8px 40px -14px rgba(0,0,0,.8);
+  box-shadow:0 8px 40px -14px var(--shadow-1);
   transition:background .4s ease, box-shadow .4s ease, border-color .4s ease;
 }
 #navbar.scrolled .glass-nav{
-  background:rgba(6,9,18,.82);
+  background:var(--nav-bg-scrolled);
   border-color:rgba(0,240,255,.18);
-  box-shadow:0 10px 44px -16px rgba(0,240,255,.35), 0 8px 40px -14px rgba(0,0,0,.85);
+  box-shadow:0 10px 44px -16px rgba(0,240,255,.35), 0 8px 40px -14px var(--shadow-1);
 }
 
 .nav-link{
-  position:relative; color:#94a3b8; transition:color .25s ease, background .25s ease;
+  position:relative; color:var(--text-muted); transition:color .25s ease, background .25s ease;
 }
-.nav-link:hover{ color:#fff; background:rgba(255,255,255,.06); }
-.nav-link.active{ color:#00f0ff; background:rgba(0,240,255,.10); }
+.nav-link:hover{ color:var(--text-strong); background:var(--surf-a); }
+.nav-link.active{ color:var(--neon-cyan); background:rgba(0,240,255,.10); }
 .nav-link.active::after{
   content:""; position:absolute; left:50%; bottom:2px; transform:translateX(-50%);
   width:60%; height:2px; border-radius:99px; background:var(--neon-cyan);
@@ -83,7 +160,7 @@ body{
 
 /* ── 5. Tipografía / degradados ────────────────────────────────── */
 .gradient-text-glow{
-  background:linear-gradient(100deg,#00f0ff 0%,#8b5cf6 42%,#ff2fd6 75%,#a6ff00 100%);
+  background:linear-gradient(100deg,var(--neon-cyan) 0%,var(--neon-violet) 42%,var(--neon-magenta) 75%,var(--neon-lime) 100%);
   background-size:220% 100%;
   -webkit-background-clip:text; background-clip:text;
   color:transparent;
@@ -100,10 +177,10 @@ body{
 
 /* ── 6. Glass card genérica ────────────────────────────────────── */
 .glass-card{
-  background:linear-gradient(160deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
+  background:linear-gradient(160deg, var(--surf-a), var(--surf-b));
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
-  box-shadow:0 10px 44px -18px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.06);
+  box-shadow:0 10px 44px -18px var(--shadow-1), inset 0 1px 0 rgba(255,255,255,.06);
   transition:transform .45s cubic-bezier(.2,.8,.25,1), box-shadow .45s ease, border-color .45s ease;
 }
 .glass-card:hover{
@@ -149,29 +226,29 @@ body{
 .badge{
   font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.1em;
   padding:4px 9px; border-radius:99px; text-transform:uppercase;
-  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); color:#cbd5e1;
+  background:var(--surf-a); border:1px solid var(--border-soft); color:var(--text-base);
 }
 .chip{
   font-family:'JetBrains Mono',monospace; font-size:10.5px;
   padding:4px 9px; border-radius:8px;
-  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.10); color:#94a3b8;
+  background:var(--surf-a); border:1px solid var(--border-soft); color:var(--text-muted);
   transition:all .25s ease; display:inline-block;
 }
 button.chip:hover, a.chip:hover{
-  background:rgba(0,240,255,.12); border-color:rgba(0,240,255,.45); color:#00f0ff;
+  background:rgba(0,240,255,.12); border-color:rgba(0,240,255,.45); color:var(--neon-cyan);
   transform:translateY(-2px);
 }
 
 /* ── 10. Tabs del plan de estudios ─────────────────────────────── */
 .year-tab{
   flex:0 0 auto; min-width:96px; padding:12px 22px; border-radius:16px; text-align:center;
-  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.10);
-  color:#94a3b8; transition:all .3s cubic-bezier(.2,.8,.25,1);
+  background:var(--surf-flat); border:1px solid var(--border-soft);
+  color:var(--text-muted); transition:all .3s cubic-bezier(.2,.8,.25,1);
   font-family:'Orbitron',sans-serif; text-transform:uppercase;
 }
-.year-tab:hover{ color:#fff; border-color:rgba(0,240,255,.35); transform:translateY(-3px); }
+.year-tab:hover{ color:var(--text-strong); border-color:rgba(0,240,255,.35); transform:translateY(-3px); }
 .year-tab[aria-selected="true"]{
-  color:#05070f; font-weight:900;
+  color:var(--void); font-weight:900;
   background:linear-gradient(135deg,var(--neon-cyan),var(--neon-lime));
   border-color:transparent;
   box-shadow:0 0 26px -4px rgba(0,240,255,.75), 0 0 60px -18px rgba(166,255,0,.6);
@@ -183,17 +260,17 @@ button.chip:hover, a.chip:hover{
 .timeline-node{
   position:absolute; left:-4.15rem; top:1.4rem;
   width:38px; height:38px; border-radius:14px; display:grid; place-items:center;
-  background:#0a0e1c; border:1px solid rgba(0,240,255,.45);
+  background:var(--node-bg); border:1px solid rgba(0,240,255,.45);
   box-shadow:0 0 20px -4px rgba(0,240,255,.7);
 }
 @media (max-width:767px){ .timeline-node{ display:none; } }
 
 /* Acordeón de asignaturas */
 .subject-card{
-  background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.09);
+  background:var(--surf-flat); border:1px solid var(--border-soft);
   border-radius:18px; overflow:hidden; transition:all .3s ease;
 }
-.subject-card:hover{ border-color:rgba(0,240,255,.3); background:rgba(255,255,255,.055); }
+.subject-card:hover{ border-color:rgba(0,240,255,.3); background:var(--surf-a); }
 .subject-head{ width:100%; display:flex; align-items:center; gap:14px; padding:16px 18px; text-align:left; }
 .subject-body{
   max-height:0; overflow:hidden; transition:max-height .45s cubic-bezier(.2,.8,.25,1), opacity .35s ease;
@@ -206,8 +283,8 @@ button.chip:hover, a.chip:hover{
 /* ── 11. Glow cards (campos laborales) ─────────────────────────── */
 .glow-card{
   position:relative; display:block; overflow:hidden;
-  border-radius:24px; border:1px solid rgba(255,255,255,.10);
-  background:linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015));
+  border-radius:24px; border:1px solid var(--border-soft);
+  background:linear-gradient(160deg, var(--surf-a), var(--surf-b));
   backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
   transition:transform .4s cubic-bezier(.2,.8,.25,1), border-color .4s ease, box-shadow .4s ease;
 }
@@ -228,12 +305,12 @@ button.chip:hover, a.chip:hover{
 .game-tab{
   display:inline-flex; align-items:center; gap:8px;
   padding:10px 16px; border-radius:14px; font-size:13px; font-weight:700;
-  color:#94a3b8; background:transparent; transition:all .3s cubic-bezier(.2,.8,.25,1);
+  color:var(--text-muted); background:transparent; transition:all .3s cubic-bezier(.2,.8,.25,1);
   white-space:nowrap;
 }
-.game-tab:hover{ color:#fff; background:rgba(255,255,255,.07); }
+.game-tab:hover{ color:var(--text-strong); background:var(--surf-a); }
 .game-tab[aria-selected="true"]{
-  color:#05070f; background:linear-gradient(135deg,var(--neon-violet),var(--neon-cyan));
+  color:var(--void); background:linear-gradient(135deg,var(--neon-violet),var(--neon-cyan));
   box-shadow:0 0 24px -6px rgba(139,92,246,.85);
 }
 .game-panel{ animation:panelIn .5s cubic-bezier(.2,.8,.25,1); }
@@ -242,34 +319,34 @@ button.chip:hover, a.chip:hover{
 /* ── 13. Cajas de estadística ──────────────────────────────────── */
 .stat-box{
   display:flex; flex-direction:column; gap:4px;
-  background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10);
+  background:var(--surf-flat); border:1px solid var(--border-soft);
   border-radius:14px; padding:10px 12px;
 }
 .stat-label{
   font-family:'JetBrains Mono',monospace; font-size:9.5px; letter-spacing:.16em;
-  color:#64748b; text-transform:uppercase;
+  color:var(--text-faint); text-transform:uppercase;
 }
 .stat-value{
-  font-family:'Orbitron',sans-serif; font-weight:900; font-size:22px; color:#fff; line-height:1;
+  font-family:'Orbitron',sans-serif; font-weight:900; font-size:22px; color:var(--text-strong); line-height:1;
 }
 
 /* Botones táctiles genéricos */
 .t-btn{
   display:grid; place-items:center; min-height:46px; padding:8px;
   border-radius:13px; font-size:12px; font-weight:700;
-  background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); color:#e2e8f0;
+  background:var(--surf-a); border:1px solid var(--border-soft); color:var(--text-base);
   transition:all .15s ease; user-select:none;
 }
-.t-btn:hover{ background:rgba(0,240,255,.16); border-color:rgba(0,240,255,.5); color:#00f0ff; }
+.t-btn:hover{ background:rgba(0,240,255,.16); border-color:rgba(0,240,255,.5); color:var(--neon-cyan); }
 .t-btn:active{ transform:scale(.93); background:rgba(0,240,255,.3); }
 
 /* ── 14. Cubo Rubik ────────────────────────────────────────────── */
 .face-btn{
   padding:9px 6px; border-radius:11px; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:700;
-  background:rgba(255,47,214,.10); border:1px solid rgba(255,47,214,.35); color:#ff8fe6;
+  background:rgba(255,47,214,.10); border:1px solid rgba(255,47,214,.35); color:var(--face-fg);
   transition:all .2s ease;
 }
-.face-btn:hover{ background:rgba(255,47,214,.28); color:#fff; box-shadow:0 0 18px -5px rgba(255,47,214,.9); }
+.face-btn:hover{ background:rgba(255,47,214,.28); color:var(--text-strong); box-shadow:0 0 18px -5px rgba(255,47,214,.9); }
 .face-btn:active{ transform:scale(.94); }
 
 /* ── 15. Ajedrez ───────────────────────────────────────────────── */
@@ -319,11 +396,11 @@ button.chip:hover, a.chip:hover{
 /* ── 17. Footer ────────────────────────────────────────────────── */
 .social-btn{
   display:grid; place-items:center; width:38px; height:38px; border-radius:11px;
-  background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.10); color:#94a3b8;
+  background:var(--surf-a); border:1px solid var(--border-soft); color:var(--text-muted);
   transition:all .3s cubic-bezier(.2,.8,.25,1);
 }
 .social-btn:hover{
-  color:#00f0ff; border-color:rgba(0,240,255,.5); transform:translateY(-4px);
+  color:var(--neon-cyan); border-color:rgba(0,240,255,.5); transform:translateY(-4px);
   box-shadow:0 0 22px -6px rgba(0,240,255,.9);
 }
 
@@ -345,3 +422,43 @@ button.chip:hover, a.chip:hover{
 @media (max-width:380px){
   .year-tab{ min-width:78px; padding:10px 14px; }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   20. MODO CLARO — Overrides de utilidades Tailwind
+   Tailwind CDN inyecta sus reglas en tiempo de ejecución; estas reglas
+   usan especificidad `html.light …` para ganarles sin tocar el modo
+   oscuro (todo queda anclado a la clase .light del <html>).
+   ══════════════════════════════════════════════════════════════════ */
+
+/* — Texto blanco → tinta oscura —
+   Excepción 1: texto sobre fondos neón sólidos/degradados (blanco sobre
+   magenta = 4.6:1 ✓ AA). Excepción 2: .gradient-text-glow pinta con
+   background-clip:text (color:transparent) y debe conservarlo. */
+html.light .text-white{ color:var(--text-strong); }
+html.light .text-white:where(.from-neon-magenta, .to-neon-magenta, .bg-neon-magenta){ color:#fff; }
+html.light .text-white:where(.gradient-text-glow){ color:transparent; }
+
+/* — Grises Slate → tokens legibles sobre blanco — */
+html.light .text-slate-200,
+html.light .text-slate-300{ color:var(--text-base); }
+html.light .text-slate-400,
+html.light .text-slate-500{ color:var(--text-muted); }
+html.light .text-slate-600{ color:var(--text-faint); }
+
+/* — Variantes con alfa → color pleno (contraste AA) — */
+html.light .text-neon-cyan\/70,
+html.light .text-neon-cyan\/80{ color:var(--neon-cyan); }
+html.light .text-neon-magenta\/80{ color:var(--neon-magenta); }
+
+/* — Superficies blancas translúcidas → cristal claro — */
+html.light .bg-white\/5{ background-color:rgba(255,255,255,.7); }
+html.light .bg-white\/10{ background-color:rgba(255,255,255,.95); }
+html.light .hover\:bg-white\/10:hover{ background-color:rgba(255,255,255,.95); }
+
+/* — Bordes blancos → tinta suave con jerarquía — */
+html.light .border-white\/10{ border-color:rgba(15,23,42,.10); }
+html.light .border-white\/15{ border-color:rgba(15,23,42,.14); }
+html.light .border-white\/20{ border-color:rgba(15,23,42,.18); }
+
+/* — Hover de enlaces (footer) — */
+html.light .hover\:text-white:hover{ color:var(--text-strong); }
